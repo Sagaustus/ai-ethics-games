@@ -13,7 +13,7 @@ const StartScreen = () => {
     <div
       style={{
         fontFamily: "Arial, sans-serif",
-        background: "url('/background.jpg') no-repeat center center fixed",
+        background: "url('https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206695/DALL_E_2024-12-14_13.03.24_-_A_conceptual_image_representing_Ethics_in_AI_development._The_image_features_a_humanoid_robot_holding_a_glowing_ethical_code_book_surrounded_by_hol_dchxfz.webp') no-repeat center center fixed",
         backgroundSize: "cover",
         color: "white",
         textAlign: "center",

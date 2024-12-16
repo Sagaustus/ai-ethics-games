@@ -1,6 +1,6 @@
 import React from "react";
-import { useRouter } from "next/navigation";
-import Image from "next/image";
+import ScenarioCard from "./ScenarioCard";
+import { useRouter } from "next/router";
 
 const scenarios = [
   {
@@ -139,31 +139,11 @@ const ScenarioSelection: React.FC = () => {
         }}
       >
         {scenarios.map((scenario) => (
-          <div
+          <ScenarioCard
             key={scenario.title}
-            style={{
-              backgroundColor: "#333",
-              borderRadius: "10px",
-              overflow: "hidden",
-              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-              cursor: "pointer",
-            }}
+            {...scenario}
             onClick={() => handleScenarioClick(scenario.link)}
-          >
-            <Image
-              src={scenario.image}
-              alt={scenario.title}
-              style={{ width: "100%", height: "200px", objectFit: "cover" }}
-            />
-            <div style={{ padding: "15px" }}>
-              <h2 style={{ fontSize: "20px", color: "#ffcc00" }}>
-                {scenario.title}
-              </h2>
-              <p style={{ fontSize: "14px", color: "#ddd" }}>
-                {scenario.description}
-              </p>
-            </div>
-          </div>
+          />
         ))}
       </div>
     </div>

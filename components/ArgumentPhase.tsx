@@ -1,7 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DebateBox from "./DebateBox";
+
+interface ArgumentPhaseProps {
+  scenario: string; // Explicitly define the scenario prop
+}
 
 const argumentData: Record<
   string,
@@ -104,11 +108,19 @@ const argumentData: Record<
   },
 };
 
-const ArgumentPhase: React.FC<{ scenario: string }> = ({ scenario }) => {
-  const data = argumentData[scenario];
+const ArgumentPhase: React.FC<ArgumentPhaseProps> = ({ scenario }) => {
   const [score, setScore] = useState(0);
   const [currentRebuttal, setCurrentRebuttal] = useState<string | null>(null);
+  const [data, setData] = useState<null | typeof argumentData[keyof typeof argumentData]>(null);
 
+  // Effect to fetch data safely
+  useEffect(() => {
+    const scenarioKey = decodeURIComponent(scenario).trim();
+    const scenarioData = argumentData[scenarioKey] || null;
+    setData(scenarioData);
+  }, [scenario]);
+
+  // Show error if scenario data is not found
   if (!data) {
     return (
       <div
@@ -123,8 +135,23 @@ const ArgumentPhase: React.FC<{ scenario: string }> = ({ scenario }) => {
       >
         <h1 style={{ fontSize: "36px", color: "#ffcc00" }}>Error</h1>
         <p style={{ fontSize: "18px", color: "#ddd" }}>
-          Scenario data not found. Please try again.
+          Scenario data not found. Please return to the scenario selection page and try again.
         </p>
+        <button
+          onClick={() => (window.location.href = "/scenario-selection")}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#ffcc00",
+            color: "#1a1a1a",
+            fontSize: "18px",
+            border: "none",
+            borderRadius: "5px",
+            cursor: "pointer",
+            marginTop: "20px",
+          }}
+        >
+          Back to Scenarios
+        </button>
       </div>
     );
   }
@@ -134,14 +161,16 @@ const ArgumentPhase: React.FC<{ scenario: string }> = ({ scenario }) => {
   };
 
   const handleArgumentSelect = (argument: { text: string; isCorrect: boolean }) => {
-    if (argument.isCorrect) {
-      setScore(score + 10);
-      alert("Correct choice! +10 points.");
-    } else {
-      setScore(score - 5);
-      alert("Incorrect choice! -5 points.");
-    }
-    window.location.href = `/round-outcome?scenario=${scenario}&score=${score}`;
+    const updatedScore = argument.isCorrect ? score + 10 : Math.max(0, score - 5);
+    setScore(updatedScore);
+
+    alert(argument.isCorrect ? "Correct choice! +10 points." : "Incorrect choice! -5 points.");
+
+    setTimeout(() => {
+      window.location.href = `/round-outcome?scenario=${encodeURIComponent(
+        scenario
+      )}&score=${updatedScore}`;
+    }, 1000); // Delay to show feedback before navigation
   };
 
   return (

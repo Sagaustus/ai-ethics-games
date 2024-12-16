@@ -1,28 +1,46 @@
+"use client";
+
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const Navbar: React.FC = () => {
+  const router = useRouter();
+
   return (
-    <nav
+    <div
       style={{
         display: "flex",
         justifyContent: "space-between",
+        alignItems: "center",
+        backgroundColor: "#333",
         padding: "10px 20px",
-        backgroundColor: "#1a1a1a",
-        color: "#fff",
-        fontFamily: "Arial, sans-serif",
       }}
     >
-      <h1 style={{ fontSize: "20px", color: "#ffcc00" }}>AI Ethics Game</h1>
-      <div style={{ display: "flex", gap: "15px" }}>
-        <Link href="/">
-          <a style={{ color: "#ffcc00", textDecoration: "none" }}>Home</a>
-        </Link>
-        <Link href="/scenario-selection">
-          <a style={{ color: "#ffcc00", textDecoration: "none" }}>Scenarios</a>
-        </Link>
-      </div>
-    </nav>
+      <h1
+        style={{
+          fontSize: "20px",
+          color: "#ffcc00",
+          cursor: "pointer",
+        }}
+        onClick={() => router.push("/")}
+      >
+        AI Ethics Game
+      </h1>
+      <nav>
+        <button
+          style={{ marginRight: "10px", background: "none", color: "#ffcc00", border: "none", cursor: "pointer" }}
+          onClick={() => router.push("/school-of-thought")}
+        >
+          Schools of Thought
+        </button>
+        <button
+          style={{ marginRight: "10px", background: "none", color: "#ffcc00", border: "none", cursor: "pointer" }}
+          onClick={() => router.push("/scenario-selection")}
+        >
+          Scenarios
+        </button>
+      </nav>
+    </div>
   );
 };
 
