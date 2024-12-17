@@ -1,34 +1,43 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-const Timer: React.FC = () => {
-  const [timeLeft, setTimeLeft] = useState(300); // 5 minutes
+interface TimerProps {
+  initialTime: number; // Initial time in seconds, passed as a prop
+}
+
+const Timer: React.FC<TimerProps> = ({ initialTime }) => {
+  const [timeLeft, setTimeLeft] = useState<number>(initialTime);
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setTimeLeft((prev) => Math.max(0, prev - 1));
-    }, 1000);
+    if (timeLeft > 0) {
+      const interval = setInterval(() => {
+        setTimeLeft((prev) => Math.max(0, prev - 1)); // Prevent negative time
+      }, 1000);
+      return () => clearInterval(interval); // Cleanup interval on unmount
+    }
+  }, [timeLeft]);
 
-    return () => clearInterval(interval);
-  }, []);
-
+  // Format time into minutes and seconds
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
   return (
     <div
       style={{
-        position: "absolute",
+        position: "fixed",
         top: "10px",
         right: "10px",
         backgroundColor: "#333",
         color: "#ffcc00",
-        padding: "10px",
+        padding: "10px 15px",
         borderRadius: "5px",
+        fontSize: "18px",
+        fontFamily: "Arial, sans-serif",
+        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
       }}
     >
-      <strong>Timer:</strong> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+      <strong>Time Left:</strong> {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
     </div>
   );
 };

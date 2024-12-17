@@ -1,12 +1,13 @@
 "use client";
 
-import React from "react";
-import Navbar from "./Navbar";
+import React, { useState } from "react";
 import Footer from "./Footer";
 import Timer from "./Timer";
 import ScoreDashboard from "./ScoreDashboard";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [time, setTime] = useState<number | null>(null); // Track the timer value
+
   return (
     <div
       style={{
@@ -18,9 +19,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-      {/* Navbar for global navigation */}
-      <Navbar />
-
+  
       {/* Main content area */}
       <div
         style={{
@@ -33,19 +32,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         }}
       >
         {/* Timer and Score Dashboard */}
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            right: "20px",
-            display: "flex",
-            gap: "20px",
-            zIndex: 100,
-          }}
-        >
-          <Timer />
-          <ScoreDashboard />
-        </div>
+        {time !== null && (
+          <div
+            style={{
+              position: "absolute",
+              top: "10px",
+              right: "20px",
+              display: "flex",
+              gap: "20px",
+              zIndex: 100,
+            }}
+          >
+            <Timer initialTime={time} />
+            <ScoreDashboard />
+          </div>
+        )}
 
         {/* Render children components */}
         <main style={{ width: "100%", maxWidth: "1200px", marginTop: "60px" }}>
@@ -53,7 +54,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         </main>
       </div>
 
-      {/* Footer for additional navigation or branding */}
+      {/* Footer */}
       <Footer />
     </div>
   );

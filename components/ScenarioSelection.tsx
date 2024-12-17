@@ -1,17 +1,18 @@
 import React from "react";
 import ScenarioCard from "./ScenarioCard";
 import { useRouter } from "next/router";
+import Image from "next/image";
 
 const scenarios = [
   {
-    title: "The Watchful Eye",
+    title: "watchfulEyeScenario",
     description: "Balancing national security and individual privacy.",
     image:
       "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206694/DALL_E_2024-12-14_13.03.08_-_A_conceptual_image_representing_Surveillance_in_AI_ethics._The_image_features_a_futuristic_cityscape_with_a_large_all-seeing_digital_eye_hovering_a_ragbcq.webp",
     link: "/exploration/the-watchful-eye",
   },
   {
-    title: "The Self-Driving Dilemma",
+    title: "SelfDrivingDilemmaScenario",
     description: "The 'trolley problem' in real-world AI applications.",
     image:
       "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206694/DALL_E_2024-12-14_13.03.11_-_A_conceptual_image_representing_Autonomy_in_AI_ethics._The_image_features_a_self-driving_car_on_a_futuristic_road_with_glowing_digital_pathways_hig_mk1jxc.webp",
@@ -25,7 +26,7 @@ const scenarios = [
     link: "/exploration/the-face-of-deception",
   },
   {
-    title: "The Biased Judge",
+    title: "theBiasedJudgeScenario",
     description: "Fairness vs. efficiency in algorithmic sentencing.",
     image:
       "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206694/DALL_E_2024-12-14_13.03.04_-_A_conceptual_image_representing_Bias_in_AI_ethics_featuring_a_robotic_scale_with_one_side_holding_diverse_human_figures_and_the_other_side_filled_w_zyvnar.webp",
@@ -128,22 +129,57 @@ const ScenarioSelection: React.FC = () => {
         minHeight: "100vh",
       }}
     >
-      <h1 style={{ fontSize: "36px", color: "#ffcc00" }}>Choose a Scenario</h1>
+      <h1 style={{ fontSize: "36px", color: "#ffcc00", marginBottom: "20px" }}>
+        Choose a Scenario
+      </h1>
+
+      {/* Grid Layout for Cards */}
       <div
         style={{
           display: "grid",
           gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
           gap: "20px",
-          margin: "20px auto",
+          justifyContent: "center",
+          alignItems: "center",
           maxWidth: "1200px",
+          margin: "0 auto",
         }}
       >
         {scenarios.map((scenario) => (
-          <ScenarioCard
+          <div
             key={scenario.title}
-            {...scenario}
-            onClick={() => handleScenarioClick(scenario.link)}
-          />
+            onClick={() => (window.location.href = scenario.link)}
+            style={{
+              cursor: "pointer",
+              borderRadius: "10px",
+              overflow: "hidden",
+              backgroundColor: "#333",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+              transition: "transform 0.2s",
+            }}
+            onMouseEnter={(e) =>
+              (e.currentTarget.style.transform = "scale(1.05)")
+            }
+            onMouseLeave={(e) =>
+              (e.currentTarget.style.transform = "scale(1.0)")
+            }
+          >
+            <Image
+              src={scenario.image}
+              alt={scenario.title}
+              width={300}
+              height={200}
+              style={{ objectFit: "cover", width: "100%" }}
+            />
+            <div style={{ padding: "10px" }}>
+              <h2 style={{ fontSize: "18px", color: "#ffcc00" }}>
+                {scenario.title}
+              </h2>
+              <p style={{ fontSize: "14px", color: "#ddd" }}>
+                {scenario.description}
+              </p>
+            </div>
+          </div>
         ))}
       </div>
     </div>

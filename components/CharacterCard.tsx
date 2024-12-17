@@ -18,13 +18,23 @@ const CharacterCard: React.FC<CharacterCardProps> = ({ name, image, onClick }) =
         backgroundColor: "#333",
         boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
         textAlign: "center",
+        maxWidth: "300px",
+        margin: "10px auto",
       }}
     >
-      <Image
-        src={image}
-        alt={name}
-        style={{ width: "100%", height: "150px", objectFit: "cover" }}
-      />
+      <div style={{ position: "relative", width: "100%", height: "200px" }}>
+        <Image
+          src={image}
+          alt={name}
+          layout="fill" // Ensures the image fills the parent div
+          objectFit="cover" // Maintains aspect ratio and covers the container
+          style={{
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+          }}
+          priority // Optimizes loading for above-the-fold content
+        />
+      </div>
       <div
         style={{
           padding: "10px",

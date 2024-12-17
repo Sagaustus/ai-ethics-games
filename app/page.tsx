@@ -1,12 +1,22 @@
 "use client";
 
+import React, { useState } from "react";
 import { useRouter } from "next/navigation";
+import Navbar from "../components/Navbar";
+import Timer from "../components/Timer";
 
-const StartScreen = () => {
+const StartScreen: React.FC = () => {
+  const [time, setTime] = useState<number | null>(null);
+  const [gameStarted, setGameStarted] = useState<boolean>(false);
   const router = useRouter();
 
-  const startGame = () => {
-    router.push("/school-of-thought");
+  const handleStartGame = () => {
+    if (time === null) {
+      alert("Please set the timer before starting the game.");
+    } else {
+      setGameStarted(true);
+      router.push("/school-of-thought");
+    }
   };
 
   return (
@@ -17,37 +27,55 @@ const StartScreen = () => {
         backgroundSize: "cover",
         color: "white",
         textAlign: "center",
-        height: "100vh",
+        minHeight: "100vh",
         display: "flex",
         flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
       }}
     >
-      <h1 style={{ fontSize: "48px", color: "#ffcc00", marginBottom: "20px" }}>
-        Welcome to AI Ethics Game
-      </h1>
-      <p style={{ fontSize: "20px", color: "#ddd", marginBottom: "30px" }}>
-        Debate ethical issues from diverse philosophical perspectives.
-      </p>
-      <button
-        onClick={startGame}
+      {/* Navbar */}
+      <Navbar onSetTime={setTime} />
+
+      {/* Main Content */}
+      <div
         style={{
-          padding: "15px 30px",
-          backgroundColor: "#ffcc00",
-          color: "#1a1a1a",
-          fontSize: "20px",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-          textTransform: "uppercase",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+          flex: 1,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "20px",
         }}
       >
-        Start Game
-      </button>
+        <h1 style={{ fontSize: "48px", color: "#ffcc00", marginBottom: "20px" }}>
+          Welcome to AI Ethics Game
+        </h1>
+        <p style={{ fontSize: "20px", color: "#ddd", marginBottom: "30px" }}>
+          Debate ethical issues from diverse philosophical perspectives.
+        </p>
+        {!gameStarted ? (
+          <button
+            onClick={handleStartGame}
+            style={{
+              padding: "15px 30px",
+              backgroundColor: "#ffcc00",
+              color: "#1a1a1a",
+              fontSize: "20px",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              textTransform: "uppercase",
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+            }}
+          >
+            Start Game
+          </button>
+        ) : (
+          <Timer initialTime={time || 0} />
+        )}
+      </div>
     </div>
   );
 };
+
 
 export default StartScreen;

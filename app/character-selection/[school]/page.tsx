@@ -7,13 +7,14 @@ const CharacterSelection: React.FC = () => {
   const router = useRouter();
   const params = useParams();
 
-  // Ensure the school parameter is normalized
-  const school = decodeURIComponent(
-    Array.isArray(params?.school) ? params.school[0] : params?.school || ""
-  )
+  // Ensure the school parameter is normalized and safe
+  const rawSchool = Array.isArray(params?.school) ? params.school[0] : params?.school || "";
+  const school = decodeURIComponent(rawSchool)
+    .trim()
     .toLowerCase()
     .replace(/-/g, " ");
 
+  // Define character options for each school of thought
   const characterOptions: Record<string, { name: string; link: string }[]> = {
     deontology: [
       { name: "Immanuel Kant", link: "/scenario-selection?character=kant" },
@@ -49,14 +50,17 @@ const CharacterSelection: React.FC = () => {
     ],
   };
 
+  // Fetch characters for the selected school
   const characters = characterOptions[school] || [];
 
+  // Redirect to "school-of-thought" if the school parameter is invalid
   useEffect(() => {
     if (!school || !characters.length) {
-      router.push("/school-of-thought");
+      router.replace("/school-of-thought"); // Use 'replace' to prevent back navigation to invalid pages
     }
   }, [school, characters, router]);
 
+  // Early return to prevent rendering invalid content before redirect
   if (!characters.length) return null;
 
   return (
@@ -71,7 +75,7 @@ const CharacterSelection: React.FC = () => {
       }}
     >
       <h1 style={{ fontSize: "36px", color: "#ffcc00", marginBottom: "20px" }}>
-        You have chosen {school}.
+        You have chosen {school.replace(/\b\w/g, (char) => char.toUpperCase())}.
       </h1>
       <p style={{ fontSize: "18px", color: "#ddd", marginBottom: "20px" }}>
         Now, choose your character:
@@ -101,7 +105,10 @@ const CharacterSelection: React.FC = () => {
               cursor: "pointer",
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
               textAlign: "center",
+              transition: "transform 0.2s",
             }}
+            onMouseOver={(e) => (e.currentTarget.style.transform = "scale(1.05)")}
+            onMouseOut={(e) => (e.currentTarget.style.transform = "scale(1)")}
           >
             {character.name}
           </button>
