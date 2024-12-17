@@ -2,7 +2,7 @@ export const watchfulEyeScenario = {
     title: "The Watchful Eye",
     description:
       "Balancing national security and individual privacy. Should facial recognition systems be adopted despite their ethical concerns?",
-    link: "watchfulEye",
+    link: "/exploration/watchfulEyeScenario",
     image:
       "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206694/DALL_E_2024-12-14_13.03.08_-_A_conceptual_image_representing_Surveillance_in_AI_ethics._The_image_features_a_futuristic_cityscape_with_a_large_all-seeing_digital_eye_hovering_a_ragbcq.webp",
     tags: ["Surveillance", "Privacy", "Security"],

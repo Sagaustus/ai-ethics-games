@@ -1,151 +1,159 @@
 export const perfectPartnerScenario = {
-    title: "The Perfect Partner",
-    description:
-      "AI-assisted happiness vs. authentic human relationships. Does relying on AI for companionship erode genuine human connections?",
-    link: "perfectPartner",
-    image:
-      "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206697/DALL_E_2024-12-14_13.03.41_-_A_conceptual_image_representing_Relationships_in_AI_ethics._The_image_features_a_humanoid_robot_and_a_human_shaking_hands_symbolizing_partnership_a_p7pspq.webp",
-    tags: ["Relationships", "Companionship", "AI"],
-    initialState: {
-      utilitarianPoints: 0,
-      deontologicalPoints: 0,
-      virtuePoints: 0,
-      dependencyFlag: false,
+  title: "The Perfect Partner",
+  description:
+    "AI-assisted happiness vs. authentic human relationships. Does relying on AI for companionship erode genuine human connections?",
+  link: "/exploration/perfectPartnerScenario",
+  image:
+    "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734206697/DALL_E_2024-12-14_13.03.41_-_A_conceptual_image_representing_Relationships_in_AI_ethics._The_image_features_a_humanoid_robot_and_a_human_shaking_hands_symbolizing_partnership_a_p7pspq.webp",
+  tags: ["Relationships", "Companionship", "AI"],
+  initialState: {
+    utilitarianPoints: 0,
+    deontologicalPoints: 0,
+    virtuePoints: 0,
+    dependencyFlag: false,
+  },
+  introduction: `
+    A tech company has released an AI companion that provides emotional support and companionship. 
+    These AI partners are increasingly becoming the primary source of emotional connection for many users, 
+    raising concerns about societal reliance on artificial relationships and the erosion of genuine human bonds. 
+    As an ethicist, you are tasked with assessing the impact and guiding future decisions.`,
+
+  exploration: [
+    {
+      text: "The AI companion program is growing in popularity, helping people overcome loneliness. However, critics argue that it reduces human connection. What will you propose?",
+      choices: [
+        {
+          text: "Promote AI companions as a solution for loneliness.",
+          outcome: "PromoteAICompanions",
+        },
+        {
+          text: "Regulate AI companions to prevent dependency.",
+          outcome: "RegulateCompanions",
+        },
+        {
+          text: "Discourage AI companionship to preserve human relationships.",
+          outcome: "DiscourageAICompanions",
+        },
+        {
+          text: "Investigate the long-term psychological effects of AI companionship.",
+          outcome: "InvestigateEffects",
+        },
+      ],
     },
-    introduction: `
-      A tech company has released an AI companion that provides emotional support and companionship. 
-      These AI partners are increasingly becoming the primary source of emotional connection for many users, 
-      raising concerns about societal reliance on artificial relationships and the erosion of genuine human bonds. 
-      As an ethicist, you are tasked with assessing the impact and guiding future decisions.`,
-    choices: [
-      {
-        option: "Promote AI companions as a solution for loneliness.",
-        nextStep: "PromoteAICompanions",
-        effects: { utilitarianPoints: 1 },
-      },
-      {
-        option: "Regulate AI companions to avoid dependency.",
-        nextStep: "RegulateCompanions",
-        effects: { virtuePoints: 1 },
-      },
-      {
-        option: "Discourage AI companionship entirely.",
-        nextStep: "DiscourageAICompanions",
-        effects: { deontologicalPoints: 1 },
-      },
-      {
-        option: "Investigate the psychological effects of AI relationships.",
-        nextStep: "InvestigateEffects",
-        effects: { dependencyFlag: true },
-      },
-    ],
-    paths: {
-      PromoteAICompanions: {
-        description: `
-          You promote AI companions as a solution to loneliness, particularly for isolated individuals. 
-          AI companionship becomes widely adopted, improving emotional well-being for many users. 
-          However, concerns arise that dependency on AI is replacing human relationships.`,
-        nextChoices: [
-          {
-            option: "Launch awareness campaigns on balancing AI and human connections.",
-            nextStep: "AwarenessCampaign",
-            effects: { virtuePoints: 1 },
-          },
-          {
-            option: "Focus on enhancing AI to mimic deeper human emotions.",
-            nextStep: "EnhanceAIEmotions",
-            effects: { utilitarianPoints: 1 },
-          },
-        ],
-      },
-      RegulateCompanions: {
-        description: `
-          You recommend regulating AI companions to avoid emotional dependency. 
-          Regulations include limitations on how AI can simulate emotions and mandatory warnings about overreliance.`,
-        outcome: `
-          The regulations help balance emotional support with human connection. 
-          Users are encouraged to seek real-world relationships while benefiting from AI assistance.`,
-      },
-      DiscourageAICompanions: {
-        description: `
-          You discourage the use of AI companions, arguing that human relationships are irreplaceable. 
-          While society maintains its focus on authentic connections, individuals suffering from isolation lack accessible support.`,
-        nextChoices: [
-          {
-            option: "Develop community programs to reduce loneliness.",
-            nextStep: "CommunityPrograms",
-            effects: { virtuePoints: 1 },
-          },
-          {
-            option: "Reconsider the role of AI in offering supplementary companionship.",
-            nextStep: "SupplementaryAI",
-            effects: { utilitarianPoints: 1 },
-          },
-        ],
-      },
-      InvestigateEffects: {
-        description: `
-          You conduct a study to investigate the psychological effects of AI companionship. 
-          Findings reveal both benefits—such as reduced loneliness—and risks, including emotional dependency and withdrawal from society.`,
-        nextChoices: [
-          {
-            option: "Publish the findings and recommend guidelines for AI development.",
-            nextStep: "PublishFindings",
-            effects: { virtuePoints: 1, dependencyFlag: true },
-          },
-          {
-            option: "Advocate for stricter controls based on the risks.",
-            nextStep: "AdvocateControls",
-            effects: { deontologicalPoints: 1 },
-          },
-        ],
-      },
-      AwarenessCampaign: {
-        description: `
-          You launch public awareness campaigns to educate users on balancing AI companionship with real human connections. 
-          Adoption of AI companions remains steady, but users report healthier relationships and reduced dependency.`,
-        outcome: `
-          Your approach helps society find a balance between leveraging technology and preserving authentic human bonds.`,
-      },
-      EnhanceAIEmotions: {
-        description: `
-          You focus on enhancing AI companions to mimic deeper human emotions. The companions become more realistic, 
-          offering nuanced emotional support, but dependency issues intensify as users increasingly choose AI over human interaction.`,
-        outcome: `
-          Your decision advances AI technology, but raises ethical questions about the line between artificial and authentic relationships.`,
-      },
-      CommunityPrograms: {
-        description: `
-          You advocate for community programs designed to reduce loneliness through social events and mental health initiatives. 
-          While progress is gradual, society benefits from stronger human connections.`,
-        outcome: `
-          Your emphasis on human relationships fosters healthier communities and reduces the need for AI substitutes.`,
-      },
-      SupplementaryAI: {
-        description: `
-          You propose using AI companions as supplementary tools to enhance—not replace—human relationships. 
-          AI is positioned as a temporary support system for individuals while encouraging real-world connections.`,
-        outcome: `
-          Your balanced approach addresses loneliness without risking societal overreliance on artificial companionship.`,
-      },
-      PublishFindings: {
-        description: `
-          You publish the findings of your investigation, providing guidelines for ethical AI development. 
-          The report helps developers create AI companions that prioritize user well-being while avoiding emotional harm.`,
-        outcome: `
-          Your research promotes transparency and accountability in AI development, fostering trust and ethical progress.`,
-      },
-      AdvocateControls: {
-        description: `
-          You advocate for stricter controls on AI companions based on the psychological risks identified. 
-          Policies are enacted to limit AI capabilities and prevent excessive emotional simulation.`,
-        outcome: `
-          Your decision prioritizes ethical responsibility but slows down AI adoption as companies adapt to the new restrictions.`,
-      },
+    {
+      text: "Your investigation reveals both benefits and risks of AI companions. Some users report emotional well-being, while others show signs of dependency. What is your next step?",
+      choices: [
+        {
+          text: "Launch public awareness campaigns about responsible AI use.",
+          outcome: "AwarenessCampaign",
+        },
+        {
+          text: "Work with developers to improve AI emotional realism.",
+          outcome: "EnhanceAIEmotions",
+        },
+      ],
     },
-    endMessage: `
-      Thank you for exploring the ethical implications of AI companionship. 
-      Your decisions have shaped the future of technology and its role in human relationships. 
-      Would you like to play again or explore another scenario?`,
-  };
-  
+  ],
+
+  paths: {
+    PromoteAICompanions: {
+      description: `
+        You promote AI companions as a solution to loneliness, especially for those who lack human connections. 
+        While adoption increases, societal concerns grow about dependency on artificial relationships.`,
+      nextChoices: [
+        {
+          option: "Launch campaigns on balancing AI with real human interactions.",
+          nextStep: "AwarenessCampaign",
+          effects: { virtuePoints: 1 },
+        },
+        {
+          option: "Enhance the AI's emotional intelligence to meet deeper needs.",
+          nextStep: "EnhanceAIEmotions",
+          effects: { utilitarianPoints: 1 },
+        },
+      ],
+    },
+    RegulateCompanions: {
+      description: `
+        You propose regulations to limit AI emotional realism and prevent user dependency. Warnings are issued alongside AI companion products.`,
+      outcome: `
+        Your regulations reduce risks of dependency while allowing AI companions to provide ethical emotional support.`,
+    },
+    DiscourageAICompanions: {
+      description: `
+        You discourage AI companionship, emphasizing the importance of genuine human relationships. 
+        While this preserves human bonds, individuals struggling with isolation lose a helpful support tool.`,
+      nextChoices: [
+        {
+          option: "Promote community-based support programs to combat loneliness.",
+          nextStep: "CommunityPrograms",
+          effects: { virtuePoints: 1 },
+        },
+        {
+          option: "Allow AI companions as supplementary tools with limitations.",
+          nextStep: "SupplementaryAI",
+          effects: { utilitarianPoints: 1 },
+        },
+      ],
+    },
+    InvestigateEffects: {
+      description: `
+        Your investigation reveals that while AI companions help reduce loneliness, they also risk emotional dependency and societal withdrawal.`,
+      nextChoices: [
+        {
+          option: "Share findings and advocate for ethical guidelines.",
+          nextStep: "PublishFindings",
+          effects: { virtuePoints: 1, dependencyFlag: true },
+        },
+        {
+          option: "Push for stricter regulations to address risks.",
+          nextStep: "AdvocateControls",
+          effects: { deontologicalPoints: 1 },
+        },
+      ],
+    },
+    AwarenessCampaign: {
+      description: `
+        You launch campaigns promoting balanced use of AI companions alongside real-world relationships. Users become more mindful of their reliance on AI.`,
+      outcome: `
+        Your efforts help society embrace AI companionship responsibly, preserving authentic human connections.`,
+    },
+    EnhanceAIEmotions: {
+      description: `
+        You enhance AI companions to mimic deeper emotional connections, offering more realistic interactions. 
+        While users benefit, concerns grow that AI is replacing real relationships entirely.`,
+      outcome: `
+        Your decision advances AI technology but raises new ethical questions about artificial versus authentic companionship.`,
+    },
+    CommunityPrograms: {
+      description: `
+        You promote community-based support programs to reduce loneliness. Social initiatives and mental health resources strengthen real human bonds.`,
+      outcome: `
+        Your focus on community-driven solutions helps build healthier, connected societies without over-relying on AI.`,
+    },
+    SupplementaryAI: {
+      description: `
+        You position AI companions as supplementary tools to assist, but not replace, human relationships. 
+        This strikes a balance between innovation and ethical concerns.`,
+      outcome: `
+        AI companions become valuable tools for emotional support while encouraging real human connections.`,
+    },
+    PublishFindings: {
+      description: `
+        You publish your findings on the benefits and risks of AI companionship, leading to ethical guidelines for developers and policymakers.`,
+      outcome: `
+        Your research ensures transparency and fosters trust in AI companionship while addressing its societal impact.`,
+    },
+    AdvocateControls: {
+      description: `
+        You advocate for stricter controls on AI companions to mitigate risks of dependency and societal withdrawal. 
+        Governments implement policies to restrict AI capabilities and encourage ethical design.`,
+      outcome: `
+        Your decision prioritizes ethical responsibility but slows the adoption of AI companionship solutions.`,
+    },
+  },
+
+  endMessage: `
+    Thank you for exploring the ethical dilemmas surrounding AI companionship. Your decisions have shaped the balance between technological progress and preserving human connections.
+    Would you like to play again or explore another scenario?`,
+};
