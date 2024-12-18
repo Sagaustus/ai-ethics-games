@@ -122,45 +122,118 @@
 
 // export default ScenarioExplorer;
 
-"use client";
-
-import React from "react";
-
-export interface Choice {
-  text: string;
-  outcome: string;
-}
-
-export interface ExplorationStep {
-  text: string;
-  choices: Choice[];
-}
-
-export interface Scenario {
-  title: string;
-  description: string;
-  exploration: ExplorationStep[];
-}
+import React, { useState } from "react";
 
 export interface ScenarioExplorerProps {
-  scenario: Scenario; // The scenario object to explore
-  character: string;  // Character name from query
+  scenario: {
+    title: string;
+    description: string;
+    link: string;
+    image: string;
+    tags: string[];
+    exploration: {
+      text: string;
+      choices: { text: string; outcome: string }[];
+      outcome?: string;
+    }[];
+    endMessage: string;
+  };
+  character: string;
 }
 
-const ScenarioExplorer: React.FC<ScenarioExplorerProps> = ({
-  scenario,
-  character,
-}) => {
+const ScenarioExplorer: React.FC<ScenarioExplorerProps> = ({ scenario, character }) => {
+  const [currentStepIndex, setCurrentStepIndex] = useState(0); // Track current exploration step
+  const currentStep = scenario.exploration[currentStepIndex];
+
+  const handleChoiceClick = (outcome: string) => {
+    // Find the next step based on the selected choice outcome
+    const nextStepIndex = scenario.exploration.findIndex(
+      (step) => step.outcome === outcome
+    );
+
+    if (nextStepIndex !== -1) {
+      setCurrentStepIndex(nextStepIndex);
+    } else {
+      setCurrentStepIndex(scenario.exploration.length - 1); // Go to the end if no match
+    }
+  };
+
   return (
-    <div style={{ fontFamily: "Arial, sans-serif", color: "white", padding: "20px" }}>
-      <h1 style={{ textAlign: "center", color: "#ffcc00" }}>
-        {scenario.title} - Exploration Phase
-      </h1>
-      <h2 style={{ textAlign: "center", color: "#ddd" }}>Character: {character}</h2>
-      <p style={{ marginTop: "20px", textAlign: "justify" }}>{scenario.description}</p>
-      {/* Exploration content logic */}
+    <div
+      style={{
+        fontFamily: "Arial, sans-serif",
+        backgroundColor: "#1a1a1a",
+        color: "white",
+        minHeight: "100vh",
+        padding: "20px",
+        textAlign: "center",
+      }}
+    >
+      {/* Scenario Title and Description */}
+      <h1 style={{ color: "#ffcc00", marginBottom: "10px" }}>{scenario.title}</h1>
+      <p style={{ color: "#ccc", fontStyle: "italic", marginBottom: "20px" }}>
+        {scenario.description}
+      </p>
+      <p style={{ color: "#ddd" }}>
+        <strong>Character:</strong> {character}
+      </p>
+
+      {/* Scenario Image */}
+      <img
+        src={scenario.image}
+        alt={scenario.title}
+        style={{
+          width: "100%",
+          maxWidth: "500px",
+          height: "auto",
+          borderRadius: "10px",
+          marginBottom: "20px",
+        }}
+      />
+
+      {/* Current Exploration Step */}
+      <div style={{ margin: "20px auto", maxWidth: "800px" }}>
+        <p style={{ fontSize: "18px", marginBottom: "20px" }}>{currentStep.text}</p>
+
+        {/* Choices */}
+        <div style={{ display: "flex", flexDirection: "column", gap: "10px" }}>
+          {currentStep.choices.map((choice, index) => (
+            <button
+              key={index}
+              onClick={() => handleChoiceClick(choice.outcome)}
+              style={{
+                padding: "12px",
+                fontSize: "16px",
+                color: "#1a1a1a",
+                backgroundColor: "#ffcc00",
+                border: "none",
+                borderRadius: "5px",
+                cursor: "pointer",
+                transition: "background-color 0.3s",
+              }}
+              onMouseOver={(e) =>
+                (e.currentTarget.style.backgroundColor = "#e6b800")
+              }
+              onMouseOut={(e) =>
+                (e.currentTarget.style.backgroundColor = "#ffcc00")
+              }
+            >
+              {choice.text}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* End Message */}
+      {currentStepIndex === scenario.exploration.length - 1 && (
+        <div style={{ marginTop: "30px", color: "#ffcc00", fontSize: "20px" }}>
+          <p>{scenario.endMessage}</p>
+        </div>
+      )}
     </div>
+    
   );
 };
 
 export default ScenarioExplorer;
+

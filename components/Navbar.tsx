@@ -2,65 +2,46 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import styles from "./Navbar.module.css";
 
 interface NavbarProps {
-  onSetTime: (time: number) => void; // Callback to set the timer
+  onSetTime: (time: number) => void;
 }
 
 const Navbar: React.FC<NavbarProps> = ({ onSetTime }) => {
   const [timeInput, setTimeInput] = useState<string>("");
+  const [error, setError] = useState<string>("");
 
   const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTimeInput(e.target.value);
+    setError("");
   };
 
   const handleSetTime = () => {
     const time = parseInt(timeInput, 10);
     if (!isNaN(time) && time > 0) {
       onSetTime(time);
-      alert(`Timer set to ${time} seconds.`);
+      setError("");
     } else {
-      alert("Please enter a valid time in seconds.");
+      setError("Please enter a valid time in seconds.");
     }
   };
 
   return (
-    <nav
-      style={{
-        backgroundColor: "#333",
-        color: "white",
-        padding: "10px 20px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-    >
-      <h1 style={{ fontSize: "20px", color: "#ffcc00" }}>AI Ethics Game</h1>
+    <nav className={styles.navbar}>
+      <h1 className={styles.title}>AI Ethics Game</h1>
       <div>
         <input
           type="number"
           placeholder="Set time (seconds)"
           value={timeInput}
           onChange={handleTimeChange}
-          style={{
-            marginRight: "10px",
-            padding: "5px",
-            borderRadius: "5px",
-            border: "1px solid #ccc",
-          }}
+          className={styles.input}
         />
-        <button
-          onClick={handleSetTime}
-          style={{
-            padding: "5px 10px",
-            backgroundColor: "#ffcc00",
-            color: "#333",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
-        >
+        <button onClick={handleSetTime} className={styles.button}>
           Set Time
         </button>
+        {error && <p className={styles.error}>{error}</p>}
       </div>
       <Link href="/exploration" style={{ color: "#ffcc00", textDecoration: "none" }}>
         Exploration
