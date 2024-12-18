@@ -1,0 +1,35 @@
+.navbar {
+    background-color: #333;
+    color: white;
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .title {
+    font-size: 20px;
+    color: #ffcc00;
+  }
+  
+  .input {
+    margin-right: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  .button {
+    padding: 5px 10px;
+    background-color: #ffcc00;
+    color: #333;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .error {
+    color: red;
+    margin-top: 5px;
+    font-size: 12px;
+  }
+  
