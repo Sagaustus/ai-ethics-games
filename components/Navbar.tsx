@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import styles from "./Navbar.module.css";
+import styles from "../styles/Navbar.module.css";
 
 interface NavbarProps {
   onSetTime: (time: number) => void;
