@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import ArgumentPhase from "@/components/ArgumentPhase";
 import { argumentData } from "@/data/argumentData";
 
+
 const loadingStyle: React.CSSProperties = {
   textAlign: "center",
   color: "#fff",
