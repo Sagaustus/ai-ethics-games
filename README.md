@@ -76,6 +76,71 @@ ai-ethics-game/
 ```
 
 ---
+/
+├── app/
+│   ├── argument-phase/
+│   │   ├── page.tsx
+│   ├── character-selection/
+│   │   ├── [school]/
+│   │   │   ├── page.tsx
+│   │   │   ├── generateStaticParams.ts
+│   ├── end-game/
+│   │   ├── page.tsx
+│   ├── exploration/
+│   │   ├── [scenario]/
+│   │   │   ├── page.tsx
+│   │   │   ├── params.ts
+│   │   ├── page.tsx
+│   ├── opponent-selection/
+│   │   ├── page.tsx
+│   ├── round-outcome/
+│   │   ├── page.tsx
+│   ├── scenario-selection/
+│   │   ├── page.tsx
+│   ├── school-of-thought/
+│   │   ├── page.tsx
+│   ├── _not-found/
+│   │   ├── page.tsx
+│   ├── layout.tsx
+│   ├── globals.css
+├── components/
+│   ├── CharacterCard.tsx
+│   ├── ExplorationPhase.tsx
+│   ├── Navbar.tsx
+│   ├── ScenarioCard.tsx
+│   ├── ScenarioExplorer.tsx
+│   ├── ScenarioSelection.tsx
+├── context/
+│   ├── GameProgressContext.tsx
+├── data/
+│   ├── scenarios/
+│   │   ├── algorithmicDoctorScenario.ts
+│   │   ├── artificialArtistScenario.ts
+│   │   ├── biasedJudgeScenario.ts
+│   │   ├── carbonFootprintScenario.ts
+│   │   ├── censoredWorldScenario.ts
+│   │   ├── consciousMachineScenario.ts
+│   │   ├── ethicalSoldierScenario.ts
+│   │   ├── faceOfDeceptionScenario.ts
+│   │   ├── joblessFutureScenario.ts
+│   │   ├── learningMachineScenario.ts
+│   │   ├── minorityReportScenario.ts
+│   │   ├── perfectPartnerScenario.ts
+│   │   ├── rogueCoderScenario.ts
+│   │   ├── selfDrivingDilemmaScenario.ts
+│   │   ├── watchfulEyeScenario.ts
+│   ├── scenarios.ts
+├── public/
+│   ├── favicon.ico
+│   ├── images/
+│   │   ├── placeholder.png
+├── styles/
+│   ├── globals.css
+├── next.config.js
+├── package.json
+├── tsconfig.json
+└── README.md
+
 
 ## Game Flow
 

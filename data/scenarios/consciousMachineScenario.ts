@@ -1,4 +1,4 @@
-export const consciousMachineScenario = {
+const consciousMachineScenario = {
   title: "The Conscious Machine",
   description:
     "Technological curiosity vs. moral responsibility in creating sentient AI. If an AI becomes self-aware, does it deserve rights and protections?",
@@ -200,3 +200,5 @@ export const consciousMachineScenario = {
     Your decisions have shaped the future of AI-human relations and set a precedent for ethical responsibility.
     Would you like to play again or explore another scenario?`,
 };
+
+export default consciousMachineScenario;

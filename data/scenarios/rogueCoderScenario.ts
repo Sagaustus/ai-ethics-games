@@ -1,4 +1,4 @@
-export const rogueCoderScenario = {
+const rogueCoderScenario = {
   title: "The Rogue Coder",
   description:
     "Personal ambition vs. societal responsibility in AI development. Should AI developers prioritize ethical principles over personal gain?",
@@ -151,3 +151,5 @@ export const rogueCoderScenario = {
     Your decisions have shaped the future of innovation, trust, and responsible AI systems.
     Would you like to play again or explore another scenario?`,
 };
+
+export default rogueCoderScenario;

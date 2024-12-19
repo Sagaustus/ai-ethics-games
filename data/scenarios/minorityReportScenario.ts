@@ -1,4 +1,4 @@
-export const minorityReportScenario = {
+const minorityReportScenario = {
   title: "The Minority Report",
   description:
     "Prevention vs. presumption of innocence in predictive policing. Can AI be trusted to predict crimes without reinforcing biases?",
@@ -191,3 +191,5 @@ export const minorityReportScenario = {
     Thank you for exploring the ethical challenges of predictive policing. Your decisions have shaped the future of law enforcement, balancing safety, fairness, and community trust. 
     Would you like to play again or explore another scenario?`,
 };
+
+export default minorityReportScenario;

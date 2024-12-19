@@ -1,4 +1,4 @@
-export const algorithmicDoctorScenario = {
+const algorithmicDoctorScenario = {
   title: "The Algorithmic Doctor",
   description:
     "Trust in AI vs. human judgment in medical diagnoses. Should AI have the final say in life-critical decisions?",
@@ -92,3 +92,5 @@ export const algorithmicDoctorScenario = {
     Thank you for exploring the ethical dilemmas of AI in healthcare. Your decisions have shaped trust, safety, and innovation in medical practices.
     Would you like to play again or explore another scenario?`,
 };
+
+export default algorithmicDoctorScenario;

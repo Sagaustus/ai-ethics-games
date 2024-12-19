@@ -1,0 +1,154 @@
+/* Global resets and base styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html, body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to bottom, #1e88e5, #ffc107); /* Blue to Yellow gradient */
+    color: #fff;
+    min-height: 100vh;
+    width: 100%;
+    overflow-x: hidden;
+  }
+  
+  /* General content container */
+  .container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  /* Headings */
+  h1, h2, h3, h4, h5, h6 {
+    color: #ffcc00; /* Bright yellow for all headings */
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  /* Buttons */
+  button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  button:hover {
+    opacity: 0.8;
+  }
+  
+  button:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Footer/Control Box */
+  .control-box {
+    background-color: #1e88e5; /* Light blue background */
+    border-top: 4px solid #ffc107; /* Yellow top border */
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+    box-shadow: 0 -4px 8px rgba(0, 0, 0, 0.2); /* Shadow for separation */
+  }
+  
+  /* Timer and Score Display */
+  .timer, .score-display {
+    font-size: 16px;
+    font-weight: bold;
+  }
+  
+  /* Navbar */
+  .navbar {
+    background-color: #1e88e5; /* Light blue */
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  /* Main Content Styling */
+  .main-content {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  /* Buttons specific to control box */
+  .control-button {
+    background-color: #ff9800; /* Orange by default */
+    color: #fff;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+  }
+  
+  .control-button:hover {
+    background-color: #fb8c00; /* Slightly brighter orange */
+  }
+  
+  .control-button--pause {
+    background-color: #e53935; /* Red for pause */
+  }
+  
+  .control-button--pause:hover {
+    background-color: #d32f2f;
+  }
+  
+  .control-button--resume {
+    background-color: #43a047; /* Green for resume */
+  }
+  
+  .control-button--resume:hover {
+    background-color: #388e3c;
+  }
+  
+  .control-button--scenario {
+    background-color: #ffeb3b; /* Yellow for Change Scenario */
+    color: #000;
+  }
+  
+  .control-button--character {
+    background-color: #673ab7; /* Purple for Change Character */
+    color: #fff;
+  }
+  
+  /* Accessibility-focused */
+  button:disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Media Queries for responsiveness */
+  @media (max-width: 768px) {
+    .control-box {
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    button {
+      width: 100%;
+    }
+  }
+  

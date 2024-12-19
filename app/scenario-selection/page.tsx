@@ -2193,8 +2193,6 @@
 // };
 
 // export default ScenarioSelectionWrapper;
-
-
 "use client";
 
 import React from "react";

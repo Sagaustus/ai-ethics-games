@@ -1,4 +1,4 @@
-export const perfectPartnerScenario = {
+const perfectPartnerScenario = {
   title: "The Perfect Partner",
   description:
     "AI-assisted happiness vs. authentic human relationships. Does relying on AI for companionship erode genuine human connections?",
@@ -157,3 +157,5 @@ export const perfectPartnerScenario = {
     Thank you for exploring the ethical dilemmas surrounding AI companionship. Your decisions have shaped the balance between technological progress and preserving human connections.
     Would you like to play again or explore another scenario?`,
 };
+
+export default perfectPartnerScenario;

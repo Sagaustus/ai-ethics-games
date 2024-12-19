@@ -1,4 +1,4 @@
-export const joblessFutureScenario = {
+const joblessFutureScenario = {
   title: "The Jobless Future",
   description:
     "Economic efficiency vs. social welfare amid AI-driven automation. How should society handle large-scale job displacement caused by AI?",
@@ -236,3 +236,5 @@ export const joblessFutureScenario = {
     Your decisions have shaped economic policy, innovation, and societal welfare.
     Would you like to play again or explore another scenario?`,
 };
+
+export default joblessFutureScenario;

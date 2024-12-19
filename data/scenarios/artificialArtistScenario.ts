@@ -1,4 +1,4 @@
-export const artificialArtistScenario = {
+const artificialArtistScenario = {
   title: "The Artificial Artist",
   description:
     "Technological progress vs. human originality in AI-generated art. Does the rise of AI creativity diminish the value of human artistry?",
@@ -102,3 +102,5 @@ export const artificialArtistScenario = {
     Thank you for exploring the ethical dilemmas of AI-generated art. Your decisions have shaped the future of creativity, 
     innovation, and fairness in the art world. Would you like to play again or explore another scenario?`,
 };
+
+export default artificialArtistScenario;

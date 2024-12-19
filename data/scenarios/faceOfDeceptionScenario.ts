@@ -1,4 +1,4 @@
-export const faceOfDeceptionScenario = {
+const faceOfDeceptionScenario = {
   title: "The Face of Deception",
   description:
     "Deepfakes and AI-generated misinformation challenge free expression and harm prevention. Should AI creators be held accountable for misuse?",
@@ -214,3 +214,5 @@ export const faceOfDeceptionScenario = {
     Thank you for exploring the ethical challenges of deepfake technology. Your decisions have shaped the outcome and contributed to the ongoing debate on AI accountability.
     Would you like to play again or explore another scenario?`,
 };
+
+export default faceOfDeceptionScenario;

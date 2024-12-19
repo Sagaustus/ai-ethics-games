@@ -1,4 +1,4 @@
-export const watchfulEyeScenario = {
+const watchfulEyeScenario = {
     title: "The Watchful Eye",
     description:
       "Balancing national security and individual privacy. Should facial recognition systems be adopted despite their ethical concerns?",
@@ -154,3 +154,5 @@ export const watchfulEyeScenario = {
       Your decisions have shaped the outcome and set a precedent for AI ethics.
       Would you like to play again or explore another scenario?`,
   };  
+
+  export default watchfulEyeScenario;

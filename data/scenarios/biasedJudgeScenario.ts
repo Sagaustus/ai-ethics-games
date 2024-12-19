@@ -1,4 +1,4 @@
-export const biasedJudgeScenario = {
+const biasedJudgeScenario = {
   title: "The Biased Judge",
   description:
     "Fairness vs. efficiency in AI-based criminal justice systems. How do we address systemic biases embedded in algorithmic decision-making?",
@@ -140,3 +140,6 @@ export const biasedJudgeScenario = {
     Thank you for exploring the ethical dilemmas in AI-based criminal justice systems. Your decisions have shaped the balance between fairness, efficiency, and public trust.
     Would you like to play again or explore another scenario?`,
 };
+
+
+export default biasedJudgeScenario;

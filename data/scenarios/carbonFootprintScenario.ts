@@ -1,4 +1,4 @@
-export const carbonFootprintScenario = {
+const carbonFootprintScenario = {
   title: "The Carbon Footprint",
   description:
     "Technological advancement vs. environmental sustainability in AI. Should energy-intensive AI systems be restricted to combat climate change?",
@@ -172,3 +172,5 @@ export const carbonFootprintScenario = {
     Thank you for exploring the ethical challenges of balancing AI development with environmental sustainability. 
     Your decisions have shaped the future of technology and its impact on the planet. Would you like to play again or explore another scenario?`,
 };
+
+export default carbonFootprintScenario;

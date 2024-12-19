@@ -1,4 +1,4 @@
-export const selfDrivingDilemmaScenario = {
+const selfDrivingDilemmaScenario = {
   title: "The Self-Driving Dilemma",
   description:
     "The 'trolley problem' in real-world AI applications. How should self-driving cars make life-and-death decisions during unavoidable accidents?",
@@ -137,3 +137,5 @@ export const selfDrivingDilemmaScenario = {
     Your decisions have shaped the balance between passenger safety, public trust, and ethical AI development.
     Would you like to play again or explore another scenario?`,
 };
+
+export default selfDrivingDilemmaScenario;

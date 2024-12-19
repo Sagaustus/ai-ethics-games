@@ -1,4 +1,4 @@
-export const censoredWorldScenario = {
+const censoredWorldScenario = {
   title: "The Censored World",
   description:
     "Freedom of expression vs. harm prevention in AI content moderation. Should AI have the power to remove content that could be deemed harmful?",
@@ -113,3 +113,5 @@ export const censoredWorldScenario = {
     Your decisions have shaped the platform's approach to balancing harm prevention and free expression.
     Would you like to play again or explore another scenario?`,
 };
+
+export default censoredWorldScenario;

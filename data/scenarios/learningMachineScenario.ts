@@ -1,4 +1,4 @@
-export const learningMachineScenario = {
+const learningMachineScenario = {
   title: "The Learning Machine",
   description:
     "Customization vs. standardization in AI-based education. Should algorithms determine what students learn, or should humans retain control?",
@@ -169,3 +169,5 @@ export const learningMachineScenario = {
     Thank you for exploring the ethical challenges of AI-based education. Your decisions have shaped the future of learning, 
     balancing technology, fairness, and human intuition. Would you like to play again or explore another scenario?`,
 };
+
+export default learningMachineScenario;

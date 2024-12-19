@@ -1,4 +1,4 @@
-export const ethicalSoldierScenario = {
+const ethicalSoldierScenario = {
   title: "The Ethical Soldier",
   description:
     "Human accountability vs. AI precision in military AI applications. Should autonomous weapons be allowed to make life-and-death decisions on the battlefield?",
@@ -194,3 +194,5 @@ export const ethicalSoldierScenario = {
     Thank you for exploring the ethical dilemmas of autonomous weapon systems. Your decisions have shaped the future of military AI and its role in warfare.
     Would you like to play again or explore another scenario?`,
 };
+
+export default ethicalSoldierScenario;
