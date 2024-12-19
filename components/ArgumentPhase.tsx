@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { argumentData } from "@/data/argumentData";
+import { argumentData } from "../data/argumentData"; // Updated import path
 import { useRouter } from "next/navigation";
 
 export type ScenarioKeys = keyof typeof argumentData;
@@ -13,7 +13,7 @@ interface ArgumentPhaseProps {
     deontologicalPoints: number;
     virtuePoints: number;
   };
-  opponentPoints: number; // Opponent's school of thought points
+  opponentPoints: number;
 }
 
 const gameOverSoundUrl =
@@ -22,6 +22,13 @@ const victorySoundUrl =
   "https://res.cloudinary.com/dirhzlg1c/video/upload/v1734498291/a-victory-225962_pmcnzy.mp3";
 const victoryImageUrl =
   "https://res.cloudinary.com/dirhzlg1c/image/upload/v1734498549/victory_hcv8sz.jpg";
+
+const playAudio = (url: string) => {
+  const audio = new Audio(url);
+  audio.play().catch((err) => {
+    console.error("Audio playback failed:", err);
+  });
+};
 
 export default function ArgumentPhase({
   scenario,
@@ -38,40 +45,30 @@ export default function ArgumentPhase({
   const playerArguments = argumentData[scenario]?.playerArguments || [];
 
   useEffect(() => {
-    // Losing Condition
     if (points.utilitarianPoints <= -2) {
       setGameOver(true);
-      const audio = new Audio(gameOverSoundUrl);
-      audio.play();
+      playAudio(gameOverSoundUrl);
       setTimeout(() => router.push("/"), 5000);
     }
 
-    // Winning Condition
     if (
       points.utilitarianPoints >= opponentPoints + 2 ||
       points.deontologicalPoints >= opponentPoints + 2 ||
       points.virtuePoints >= opponentPoints + 2
     ) {
       setGameWon(true);
-      const audio = new Audio(victorySoundUrl);
-      audio.play();
+      playAudio(victorySoundUrl);
       setTimeout(() => router.push("/"), 60000);
     }
   }, [points, opponentPoints, router]);
 
   const handlePlayerChoice = (isCorrect: boolean) => {
     if (!gameOver && !gameWon) {
-      if (isCorrect) {
-        setPoints((prev) => ({
-          ...prev,
-          virtuePoints: prev.virtuePoints + 1,
-        }));
-      } else {
-        setPoints((prev) => ({
-          ...prev,
-          utilitarianPoints: prev.utilitarianPoints - 1,
-        }));
-      }
+      setPoints((prev) => ({
+        ...prev,
+        virtuePoints: isCorrect ? prev.virtuePoints + 1 : prev.virtuePoints,
+        utilitarianPoints: !isCorrect ? prev.utilitarianPoints - 1 : prev.utilitarianPoints,
+      }));
     }
   };
 
@@ -142,22 +139,16 @@ export default function ArgumentPhase({
         gap: "20px",
       }}
     >
-      <h1 style={{ fontSize: "28px", color: "#ffcc00" }}>
-        Argument Phase: {scenario}
-      </h1>
+      <h1 style={{ fontSize: "28px", color: "#ffcc00" }}>Argument Phase: {scenario}</h1>
       <h2 style={{ fontSize: "24px", color: "#ddd" }}>{npcArgument}</h2>
 
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        <h3 style={{ fontSize: "20px", color: "#ffcc00", marginBottom: "10px" }}>
-          Rebuttal:
-        </h3>
+        <h3 style={{ fontSize: "20px", color: "#ffcc00", marginBottom: "10px" }}>Rebuttal:</h3>
         <p style={{ color: "#ccc" }}>{rebuttals.join(", ")}</p>
       </div>
 
       <div style={{ width: "100%", maxWidth: "600px" }}>
-        <h3 style={{ fontSize: "20px", color: "#ffcc00", marginBottom: "10px" }}>
-          Your Choices:
-        </h3>
+        <h3 style={{ fontSize: "20px", color: "#ffcc00", marginBottom: "10px" }}>Your Choices:</h3>
         <ul style={{ listStyleType: "none", padding: 0 }}>
           {playerArguments.map((arg, index) => (
             <li

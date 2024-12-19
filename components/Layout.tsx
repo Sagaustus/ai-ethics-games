@@ -5,8 +5,8 @@ import ControlBox from "./ControlBox";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isGameActive, setIsGameActive] = useState(false);
-  const [currentStage, setCurrentStage] = useState<"exploration" | "argument" | "end">(
-    "exploration"
+  const [currentStage, setCurrentStage] = useState<"school" | "exploration" | "argument" | "end">(
+    "school"
   );
   const [score, setScore] = useState({
     utilitarianPoints: 0,
@@ -39,11 +39,21 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   };
 
   const handleChangeScenario = () => {
-    alert("Scenario changed!");
+    if (currentStage === "exploration" || currentStage === "argument") {
+      alert("Scenario changed!");
+      // Add logic to switch scenarios here if applicable
+    } else {
+      console.warn("Change Scenario is only available during Exploration or Argument phases.");
+    }
   };
 
   const handleChangeCharacter = () => {
-    alert("Character changed!");
+    if (currentStage === "argument") {
+      alert("Character changed!");
+      // Add logic to change characters here
+    } else {
+      console.warn("Change Character is only available during the Argument phase.");
+    }
   };
 
   return (
