@@ -2,7 +2,7 @@
 
 import React, { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import ArgumentPhase from "./ArgumentPhase";
+import ArgumentPhase from "@/components/ArgumentPhase";
 import { argumentData } from "@/data/argumentData";
 
 const loadingStyle: React.CSSProperties = {
