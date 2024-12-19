@@ -24,29 +24,36 @@ Here’s the complete updated `README.md` file with the illustrated tutorial and
 
 ## Illustrated Game Tutorial
 
-1. ![Start Game](public/img/1.png)
-   **Start the game by clicking on the yellow button.**
+1. **Start the game by clicking on the yellow button.**
+   ![Start Game](public/img/1.png)
 
-2. ![Select Ethical Theory](public/img/2.png)
-   **Select your preferred ethical theory.**
+2. **Select your preferred ethical theory.**
+   ![Select Ethical Theory](public/img/2.png)
+   
 
-3. ![Choose Philosopher](public/img/3.png)
-   **Choose your favorite philosopher.**
+3.  **Choose your favorite philosopher.**
+   ![Choose Philosopher](public/img/3.png)
+  
 
-4. ![Choose Scenario](public/img/4.png)
-   **Choose a scenario you would like to explore.**
+4.  **Choose a scenario you would like to explore.**
+   ![Choose Scenario](public/img/4.png)
+  
 
-5. ![Exploration Phase](public/img/5.png)
-   **Start the Exploration Phase.**
+5. **Start the Exploration Phase.**
+   ![Exploration Phase](public/img/5.png)
+   
 
-6. ![Argumentation Phase](public/img/6.png)
-   **Begin the Argumentation Phase.**
+6. **Begin the Argumentation Phase.**
+   ![Argumentation Phase](public/img/6.png)
+   
 
-7. ![Lose](public/img/7.png)
-   **Lose: Learn from your mistakes and try again!**
+7.  **Lose: Learn from your mistakes and try again!**
+   ![Lose](public/img/7.png)
+  
 
-8. ![Win](public/img/8.png)
-   **Win: Your arguments prevailed, and you achieved victory!**
+8.  **Win: Your arguments prevailed, and you achieved victory!**
+   ![Win](public/img/8.png)
+  
 
 ---
 
