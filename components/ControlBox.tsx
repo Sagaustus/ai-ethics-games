@@ -88,7 +88,7 @@ const ControlBox: React.FC<ControlBoxProps> = ({
               transition: "background-color 0.3s ease",
             }}
           >
-            Start Game
+            Timer
           </button>
         )}
         {isGameActive && (
