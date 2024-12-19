@@ -1,48 +1,43 @@
 "use client";
 
 import React, { Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import ArgumentPhase from "./ArgumentPhase";
+import { argumentData } from "@/data/argumentData";
 
-const ArgumentPhaseWrapper: React.FC = () => {
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <ArgumentPhaseWithParams />
-    </Suspense>
-  );
+const loadingStyle: React.CSSProperties = {
+  textAlign: "center",
+  color: "#fff",
 };
 
-const ArgumentPhaseWithParams: React.FC = () => {
+export default function ArgumentPhaseWrapper() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const scenario = searchParams.get("scenario");
 
-  if (!scenario) {
+  // Type guard to validate the scenario
+  const isValidScenario = (value: string | null): value is keyof typeof argumentData =>
+    value !== null && value in argumentData;
+
+  // Handle invalid scenario
+  if (!isValidScenario(scenario)) {
     return (
-      <div
-        style={{
-          fontFamily: "Arial, sans-serif",
-          backgroundColor: "#1a1a1a",
-          color: "white",
-          textAlign: "center",
-          padding: "20px",
-          minHeight: "100vh",
-        }}
-      >
-        <h1 style={{ fontSize: "36px", color: "#ffcc00" }}>Error</h1>
-        <p style={{ fontSize: "18px", color: "#ddd" }}>
-          No scenario selected. Please return to the scenario selection page.
-        </p>
+      <div style={{ textAlign: "center", color: "red" }}>
+        <h1>Error</h1>
+        <p>Invalid scenario. Please return to the scenario selection page.</p>
         <button
-          onClick={() => (window.location.href = "/scenario-selection")}
+          onClick={() => router.push("/exploration")}
           style={{
             padding: "10px 20px",
             backgroundColor: "#ffcc00",
             color: "#1a1a1a",
-            fontSize: "18px",
-            border: "none",
+            fontSize: "16px",
             borderRadius: "5px",
             cursor: "pointer",
             marginTop: "20px",
+            textTransform: "uppercase",
+            border: "none",
+            boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
           }}
         >
           Back to Scenarios
@@ -51,7 +46,15 @@ const ArgumentPhaseWithParams: React.FC = () => {
     );
   }
 
-  return <ArgumentPhase scenario={scenario} />;
-};
+  const initialPoints = {
+    utilitarianPoints: 0,
+    deontologicalPoints: 0,
+    virtuePoints: 0,
+  };
 
-export default ArgumentPhaseWrapper;
+  return (
+    <Suspense fallback={<div style={loadingStyle}>Loading Argument Phase...</div>}>
+      <ArgumentPhase scenario={scenario} initialPoints={initialPoints} />
+    </Suspense>
+  );
+}

@@ -187,23 +187,36 @@
 // };
 
 // export default ScenarioSelection;
-
 "use client";
 
 import React from "react";
-import { useRouter } from "next/navigation";
-import { scenarios } from "@/data/scenarios"; // Import all scenarios
-import ScenarioCard from "./ScenarioCard";
+import { useSearchParams } from "next/navigation";
 
 const ScenarioSelection: React.FC = () => {
-  const router = useRouter();
+  const searchParams = useSearchParams();
+  const character = searchParams.get("character");
 
-  const handleScenarioClick = (scenarioKey: string) => {
-    router.push(`/exploration/${scenarioKey}`);
-  };
-
-  // Retrieve scenario keys and dynamically generate paths
-  const scenarioKeys = Object.keys(scenarios);
+  if (!character) {
+    return (
+      <div
+        style={{
+          fontFamily: "Arial, sans-serif",
+          backgroundColor: "#1a1a1a",
+          color: "white",
+          textAlign: "center",
+          padding: "20px",
+          minHeight: "100vh",
+        }}
+      >
+        <h1 style={{ fontSize: "36px", color: "#ffcc00", marginBottom: "20px" }}>
+          No Character Selected
+        </h1>
+        <p style={{ fontSize: "18px", color: "#ddd" }}>
+          Please go back and select a character.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div
@@ -217,37 +230,11 @@ const ScenarioSelection: React.FC = () => {
       }}
     >
       <h1 style={{ fontSize: "36px", color: "#ffcc00", marginBottom: "20px" }}>
-        Choose a Scenario to Explore
+        Scenarios for {character.charAt(0).toUpperCase() + character.slice(1)}
       </h1>
-      <p style={{ fontSize: "18px", color: "#ccc", marginBottom: "20px" }}>
-        Navigate through AI ethical dilemmas and make impactful decisions.
+      <p style={{ fontSize: "18px", color: "#ddd", marginBottom: "20px" }}>
+        Explore the scenarios related to {character}.
       </p>
-
-      {/* Grid Layout for Scenario Cards */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
-          gap: "20px",
-          margin: "0 auto",
-          maxWidth: "1200px",
-        }}
-      >
-        {scenarioKeys.map((key) => {
-          const scenario = scenarios[key as keyof typeof scenarios];
-          const scenarioPath = key.replace("Scenario", ""); // Clean up the key for routing
-
-          return (
-            <ScenarioCard
-              key={key}
-              title={scenario.title}
-              description={scenario.description}
-              image={scenario.image}
-              onClick={() => handleScenarioClick(scenarioPath)}
-            />
-          );
-        })}
-      </div>
     </div>
   );
 };

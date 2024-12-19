@@ -1,12 +1,50 @@
 "use client";
 
 import React, { useState } from "react";
-import Footer from "./Footer";
-import Timer from "./Timer";
-import ScoreDashboard from "./ScoreDashboard";
+import ControlBox from "./ControlBox";
 
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [time, setTime] = useState<number | null>(null); // Track the timer value
+  const [isGameActive, setIsGameActive] = useState(false);
+  const [currentStage, setCurrentStage] = useState<"exploration" | "argument" | "end">(
+    "exploration"
+  );
+  const [score, setScore] = useState({
+    utilitarianPoints: 0,
+    deontologicalPoints: 0,
+    virtuePoints: 0,
+  });
+
+  const handleStartGame = () => {
+    setIsGameActive(true);
+    setCurrentStage("exploration");
+    setScore({ utilitarianPoints: 0, deontologicalPoints: 0, virtuePoints: 0 });
+  };
+
+  const handleRestartGame = () => {
+    window.location.href = "/";
+  };
+
+  const handleEndGame = () => {
+    setIsGameActive(false);
+    setCurrentStage("end");
+    alert("The game has ended! Thank you for playing.");
+  };
+
+  const handlePauseGame = () => {
+    console.log("Game paused");
+  };
+
+  const handleResumeGame = () => {
+    console.log("Game resumed");
+  };
+
+  const handleChangeScenario = () => {
+    alert("Scenario changed!");
+  };
+
+  const handleChangeCharacter = () => {
+    alert("Character changed!");
+  };
 
   return (
     <div
@@ -19,43 +57,32 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
         fontFamily: "Arial, sans-serif",
       }}
     >
-  
       {/* Main content area */}
       <div
         style={{
           flex: 1,
           padding: "20px",
-          position: "relative",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
         }}
       >
-        {/* Timer and Score Dashboard */}
-        {time !== null && (
-          <div
-            style={{
-              position: "absolute",
-              top: "10px",
-              right: "20px",
-              display: "flex",
-              gap: "20px",
-              zIndex: 100,
-            }}
-          >
-            <Timer initialTime={time} />
-            <ScoreDashboard />
-          </div>
-        )}
-
-        {/* Render children components */}
-        <main style={{ width: "100%", maxWidth: "1200px", marginTop: "60px" }}>
-          {children}
-        </main>
+        <main style={{ width: "100%", maxWidth: "1200px" }}>{children}</main>
       </div>
 
-      {/* Footer */}
-      <Footer />
+      {/* Control Box */}
+      <ControlBox
+        onStartGame={handleStartGame}
+        onRestartGame={handleRestartGame}
+        onEndGame={handleEndGame}
+        onPauseGame={handlePauseGame}
+        onResumeGame={handleResumeGame}
+        onChangeScenario={handleChangeScenario}
+        onChangeCharacter={handleChangeCharacter}
+        score={score}
+        isGameActive={isGameActive}
+        currentStage={currentStage}
+      />
     </div>
   );
 };
