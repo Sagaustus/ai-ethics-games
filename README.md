@@ -1,7 +1,3 @@
-Here’s the complete updated `README.md` file with the illustrated tutorial and updated content:
-
----
-
 # MindScape: AI Ethics Game
 
 **MindScape** is a visual and interactive game designed to teach players about the ethical implications of Artificial Intelligence. Players choose a school of thought, a philosopher character, and engage in scenario-based argumentation battles. Points are earned through presenting arguments and counterarguments, progressing through different phases of the game.
@@ -159,5 +155,3 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 Special thanks to Prof Geoffrey Rockwell, whose AI Ethics Bowl and course content inspired the ethical dilemmas and debates within the game. 
 
 --- 
-
-This `README.md` ensures an easy onboarding experience for new users and contributors while providing a clear, visual guide to the game's functionality. Let me know if there are further details to include!
