@@ -3,7 +3,8 @@
 import React, { Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import ArgumentPhase from "./ArgumentPhase";
-import { argumentData } from "@/data/argumentData"; // Updated import path
+import argumentData from "@/data/argumentData"; // Correct default import
+
 
 const ArgumentPhaseWrapper: React.FC = () => {
   const searchParams = useSearchParams();

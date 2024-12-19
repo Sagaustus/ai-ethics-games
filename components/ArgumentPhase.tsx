@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { argumentData } from "@/data/argumentData"; // Updated import path
+import argumentData from "@/data/argumentData"; // Correct default import
 import { useRouter } from "next/navigation";
 
 export type ScenarioKeys = keyof typeof argumentData;
