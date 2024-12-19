@@ -1,9 +1,14 @@
+Here’s the complete updated `README.md` file with the illustrated tutorial and updated content:
 
-# AI Ethics Game
+---
 
-This is a visual and interactive game designed to teach players about the ethical implications of Artificial Intelligence. Players choose a school of thought, a philosopher character, and engage in scenario-based argumentation battles. Points are earned through presenting arguments and counterarguments, progressing through different phases of the game.
+# MindScape: AI Ethics Game
+
+**MindScape** is a visual and interactive game designed to teach players about the ethical implications of Artificial Intelligence. Players choose a school of thought, a philosopher character, and engage in scenario-based argumentation battles. Points are earned through presenting arguments and counterarguments, progressing through different phases of the game.
+
 **Publicly available as a web application**:
-   Navigate to [https://ai-ethics-games.vercel.app).
+   Navigate to [https://mindscape-ai-ethics-games.vercel.app](https://mindscape-ai-ethics-games.vercel.app).
+
 ---
 
 ## Features
@@ -17,62 +22,33 @@ This is a visual and interactive game designed to teach players about the ethica
 
 ---
 
-## File Structure
+## Illustrated Game Tutorial
 
-```plaintext
-ai-ethics-game/
-├── app/
-│   ├── layout.tsx               # Layout component for consistent page structure
-│   ├── page.tsx                 # Landing page (Start screen)
-│   ├── school-of-thought/       # Directory for school of thought selection
-│   │   ├── page.tsx             # School of Thought Selection page
-│   ├── character-selection/     # Directory for character selection
-│   │   ├── [school]/            # Dynamic routes for school of thought
-│   │   │   ├── page.tsx         # Character Selection page
-│   ├── scenario-selection/      # Directory for scenario selection
-│   │   ├── page.tsx             # Scenario Selection page
-│   ├── exploration/             # Directory for scenario exploration
-│   │   ├── [scenario]/          # Dynamic routes for each scenario
-│   │   │   ├── page.tsx         # Exploration phase page
-│   ├── argument-phase/          # Directory for argument phase
-│   │   ├── page.tsx             # Argument Phase page
-│   ├── round-outcome/           # Directory for round outcomes
-│   │   ├── page.tsx             # Round Outcome page
-│   ├── end-game/                # Directory for end-game logic
-│   │   ├── page.tsx             # End Game page
-├── components/                  # Reusable components
-│   ├── Navbar.tsx               # Navigation bar (if needed)
-│   ├── Footer.tsx               # Footer component
-│   ├── ScenarioCard.tsx         # Card component for scenarios
-│   ├── CharacterCard.tsx        # Card component for characters
-│   ├── DecisionTree.tsx         # Component for decision-tree interactions
-│   ├── TriviaQuiz.tsx           # Component for trivia challenges
-│   ├── DebateBox.tsx            # Component for AI debates
-├── public/                      # Publicly accessible assets
-│   ├── images/                  # Static images
-│   │   ├── school-icons/        # Icons for schools of thought
-│   │   ├── scenario-images/     # Images for scenarios
-│   │   ├── background.jpg       # Background image for the game
-│   ├── videos/                  # Video assets
-│   ├── audio/                   # Audio files for scenarios and phases
-├── styles/                      # Custom CSS or Tailwind CSS files
-│   ├── globals.css              # Global styles for the project
-│   ├── scenario.css             # Styles for scenarios
-│   ├── components.css           # Shared styles for components
-├── utils/                       # Utility functions
-│   ├── stateManager.ts          # Manage global state (e.g., user progress)
-│   ├── fetchScenarioData.ts     # Fetch or import scenario details
-│   ├── scoringLogic.ts          # Logic for scoring and progression
-├── .next/                       # Generated during builds (ignored in git)
-├── .vscode/                     # IDE settings (optional)
-├── node_modules/                # Installed dependencies
-├── .gitignore                   # Files and directories to ignore in git
-├── next.config.js               # Next.js configuration file
-├── package.json                 # Project metadata and dependencies
-├── tsconfig.json                # TypeScript configuration
-├── tailwind.config.js           # Tailwind CSS configuration (if used)
-```
+1. ![Start Game](/img/1.png)
+   **Start the game by clicking on the yellow button.**
 
+2. ![Select Ethical Theory](/img/2.png)
+   **Select your preferred ethical theory.**
+
+3. ![Choose Philosopher](/img/3.png)
+   **Choose your favorite philosopher.**
+
+4. ![Choose Scenario](/img/4.png)
+   **Choose a scenario you would like to explore.**
+
+5. ![Exploration Phase](/img/5.png)
+   **Start the Exploration Phase.**
+
+6. ![Argumentation Phase](/img/6.png)
+   **Begin the Argumentation Phase.**
+
+7. ![Lose](/img/7.png)
+   **Lose: Learn from your mistakes and try again!**
+
+8. ![Win](/img/8.png)
+   **Win: Your arguments prevailed, and you achieved victory!**
+
+---
 
 ## Game Flow
 
@@ -110,12 +86,29 @@ ai-ethics-game/
 
 ---
 
+## Additional Links
+
+- **Game Video Demo**: [Watch Demo](https://youtu.be/8vpyzvUP5g4)
+- **Game Public URL**: [Play Game](https://mindscape-ai-ethics-games.vercel.app)
+- **Game Open Source Code**: [View Repository](https://github.com/Sagaustus/ai-ethics-games)
+
+---
+
+## Technologies Used
+
+- **Frontend**: React, Next.js
+- **Styling**: Tailwind CSS
+- **State Management**: Custom state management using TypeScript utilities
+- **Assets**: Cloudinary for images and Heroku for hosting
+
+---
+
 ## Installation and Setup
 
 1. **Clone the repository**:
    ```bash
-   git clone https://github.com/your-username/ai-ethics-game.git
-   cd ai-ethics-game
+   git clone https://github.com/Sagaustus/ai-ethics-games.git
+   cd ai-ethics-games
    ```
 
 2. **Install dependencies**:
@@ -142,15 +135,6 @@ ai-ethics-game/
 
 ---
 
-## Technologies Used
-
-- **Frontend**: React, Next.js
-- **Styling**: Tailwind CSS
-- **State Management**: Custom state management using TypeScript utilities
-- **Assets**: Cloudinary for images and Heroku for hosting
-
----
-
 ## Contributing
 
 Contributions are welcome! Please submit a pull request or open an issue to discuss changes.
@@ -165,4 +149,8 @@ This project is licensed under the MIT License. See the `LICENSE` file for detai
 
 ## Acknowledgements
 
-Special thanks to the Prof Geoffrey Rockwell whose AI Ethics Bowl and Course Content inspired the ethical dilemmas and debates within the game.
+Special thanks to Prof Geoffrey Rockwell, whose AI Ethics Bowl and course content inspired the ethical dilemmas and debates within the game. 
+
+--- 
+
+This `README.md` ensures an easy onboarding experience for new users and contributors while providing a clear, visual guide to the game's functionality. Let me know if there are further details to include!
