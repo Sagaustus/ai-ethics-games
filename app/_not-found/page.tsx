@@ -1,15 +1,16 @@
+// app/_not-found/page.tsx
 export default function NotFound() {
     return (
-        <main style={{ textAlign: "center", padding: "20px" }}>
-            <h1 style={{ fontSize: "2rem", marginBottom: "1rem" }}>
-                404 - Page Not Found
-            </h1>
-            <p style={{ fontSize: "1.25rem", marginBottom: "2rem" }}>
-                Sorry, we couldn't find the page you're looking for.
-            </p>
-            <a href="/" style={{ color: "#0070f3", textDecoration: "underline" }}>
-                Go back to Home
-            </a>
-        </main>
-    );
-}
+      <div className="flex flex-col items-center justify-center min-h-[80vh] px-4 text-center">
+        <h1 className="text-6xl font-bold mb-4">404</h1>
+        <p className="text-xl mb-6">Oops! Page not found.</p>
+        <a
+          href="/"
+          className="px-6 py-3 bg-portal-gold text-mindscape-bg rounded-lg font-semibold hover:opacity-90 transition"
+        >
+          Go back home
+        </a>
+      </div>
+    )
+  }
+  

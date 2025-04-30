@@ -1,37 +1,30 @@
-import React from "react";
+'use client';
 
 interface DecisionTreeProps {
-  question: string;
-  options: { choice: string; outcome: string }[];
-  onSelect: (outcome: string) => void;
+  onSelect: (principle: string) => void;
 }
 
-const DecisionTree: React.FC<DecisionTreeProps> = ({
-  question,
-  options,
-  onSelect,
-}) => {
+const principles = [
+  'Appeal to Consequence',
+  'Challenge Premise',
+  'Use Philosophical Quote',
+  'Invoke Categorical Imperative',
+  'Maximize Utility',
+];
+
+export default function DecisionTree({ onSelect }: DecisionTreeProps) {
   return (
-    <div style={{ textAlign: "center", fontFamily: "Arial, sans-serif" }}>
-      <h2 style={{ color: "#ffcc00", fontSize: "20px" }}>{question}</h2>
-      {options.map((option, index) => (
+    <div className="bg-debate-panel p-4 rounded-2xl space-y-4">
+      <h3 className="text-xl font-semibold mb-2">Your Response</h3>
+      {principles.map((p) => (
         <button
-          key={index}
-          onClick={() => onSelect(option.outcome)}
-          style={{
-            margin: "10px",
-            padding: "10px 20px",
-            backgroundColor: "#333",
-            color: "#ffcc00",
-            borderRadius: "5px",
-            cursor: "pointer",
-          }}
+          key={p}
+          onClick={() => onSelect(p)}
+          className="w-full text-left px-4 py-2 bg-mindscape-bg hover:bg-mindscape-bg/50 rounded-lg transition"
         >
-          {option.choice}
+          {p}
         </button>
       ))}
     </div>
   );
-};
-
-export default DecisionTree;
+}

@@ -1,22 +1,20 @@
-import React from "react";
-import "./globals.css"; // Include global styles
-import Layout from "../components/Layout"; // Import your Layout component
-import { GameProgressProvider } from "./context/GameProgressContext";
- // Import your GameProgressProvider
+import '@/styles/globals.css';
+import { ReactNode } from 'react';
+import { GameProvider } from '@/context/GameContext';
+import ClientLayout from '@/components/ClientLayout';
 
 export const metadata = {
-  title: "AI Ethics Game",
-  description: "Explore the ethics of AI through interactive scenarios",
+  title: 'Mindscape: AI Ethics Game',
+  description: 'Explore the ethics of AI through interactive scenarios',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, padding: 0 }}>
-        {/* Wrap the entire app in GameProgressProvider */}
-        <GameProgressProvider>
-          <Layout>{children}</Layout>
-        </GameProgressProvider>
+      <body className="bg-mindscape-bg text-mindscape-fg font-sans">
+        <GameProvider>
+          <ClientLayout>{children}</ClientLayout>
+        </GameProvider>
       </body>
     </html>
   );

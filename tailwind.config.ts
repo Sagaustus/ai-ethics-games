@@ -16,3 +16,11 @@ export default {
   },
   plugins: [],
 } satisfies Config;
+
+module.exports = {
+  theme: {
+    extend: {
+      colors: { 'neon-gold': '#ffcc00' },
+    },
+  },
+};
