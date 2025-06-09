@@ -1,14 +1,9 @@
 // hooks/useGameState.ts
 
-import { useGameStore } from '@/game/state/gameStore';
-import { GameState, GameActions } from '@/game/types'; // Import types
+import { useGameStore } from '@/game/state/gameStore'
 
 /**
- * Custom hook to access the global game state and actions.
- * This provides a convenient way for components to interact with the Zustand store.
- * @returns The current game state and actions.
+ * Returns the entire game store
+ * Let TypeScript infer the exact return type from useGameStore
  */
-export const useGameState = (): GameState & GameActions => {
-  const gameState = useGameStore();
-  return gameState;
-};
+export const useGameState = () => useGameStore()
