@@ -30,9 +30,12 @@ export default function QuoteCard({ card }: QuoteCardProps) {
       ref={(node: HTMLDivElement | null) => {
         if (node) drag(node);
       }}
-      className={`p-4 bg-mindscape-fg/10 border border-mindscape-fg rounded-lg cursor-move select-none ${
-        isDragging ? 'opacity-50' : 'opacity-100'
-      }`}
+      className={`
+        p-4 bg-mindscape-fg/10
+        border border-mindscape-fg
+        rounded-lg cursor-move select-none
+        ${isDragging ? 'opacity-50' : 'opacity-100'}
+      `}
     >
       <p className="text-sm">{card.text}</p>
     </div>
