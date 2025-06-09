@@ -13,8 +13,8 @@ interface QuoteCardProps {
 }
 
 export default function QuoteCard({ card }: QuoteCardProps) {
-  // useDrag v14 array signature returns a ref-compatible function
-  const [{ isDragging }, dragRef] = useDrag<QuoteCardData, void, { isDragging: boolean }>(
+  // useDrag array signature: drag may still be a ConnectDragSource, so wrap in a ref callback
+  const [{ isDragging }, drag] = useDrag<QuoteCardData, void, { isDragging: boolean }>(
     () => ({
       type: 'QUOTE',
       item: card,
@@ -27,7 +27,11 @@ export default function QuoteCard({ card }: QuoteCardProps) {
 
   return (
     <div
-      ref={dragRef}
+      ref={(node: HTMLDivElement | null) => {
+        if (node) {
+          drag(node);
+        }
+      }}
       className={`p-4 bg-mindscape-fg/10 border border-mindscape-fg rounded-lg cursor-move select-none ${
         isDragging ? 'opacity-50' : 'opacity-100'
       }`}
