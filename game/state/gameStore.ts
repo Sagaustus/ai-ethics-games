@@ -11,6 +11,17 @@ interface PlayerState {
     virtue: number;
     // Add other scoring categories as needed
   };
+  /**
+   * Persist progress information for each scenario so features like the
+   * Rewind page can display completed decisions.
+   */
+  scenarioProgress: {
+    [scenarioSlug: string]: {
+      completed: boolean;
+      highestScore: number;
+      decisions: { stepIndex: number; choiceOutcome: string }[];
+    };
+  };
   // Add other player-specific state like inventory, achievements, etc.
 }
 
@@ -33,8 +44,14 @@ interface GameState {
   scenario: ScenarioState;
   isLoading: boolean;
   error: string | null;
-  // Add other global game state like game status (e.g., ' idle', 'in-game', 'game-over')
-  // and potentially UI state related to overlays or modals
+  /**
+   * Tracks the overall status of the game so pages can react to phase changes.
+   * Examples: 'idle' before a scenario starts, 'in-game-exploration',
+   * 'in-game-argument', 'game-over', etc.
+   */
+  gameStatus: 'idle' | 'menu' | 'in-game-exploration' | 'in-game-argument' | 'game-over' | 'paused';
+  /** Track which modal (if any) is currently open so UI components can react */
+  activeModal: 'none' | 'mutation' | 'voting' | 'plotTwist' | 'achievement' | 'levelUp' | 'unlockOverlay' | string;
 }
 
 // Define the actions that can modify the state
@@ -44,6 +61,10 @@ interface GameActions {
   updateScore: (type: 'utilitarian' | 'deontological' | 'virtue', amount: number) => void;
   setCurrentScenario: (slug: string) => void;
   nextScenarioStep: (choiceOutcome: string) => void;
+  /** Update the current game status */
+  setGameStatus: (status: GameState['gameStatus']) => void;
+  /** Open or close a modal dialog */
+  setActiveModal: (modal: GameState['activeModal']) => void;
   // Add more actions for starting/ending scenarios, saving/loading, etc.
 }
 
@@ -59,11 +80,14 @@ export const useGameStore = create<GameStore>((set) => ({
       deontological: 0,
       virtue: 0,
     },
+    scenarioProgress: {},
   },
   scenario: {
     currentStepIndex: 0,
     scenarioProgress: {},
   },
+  gameStatus: 'idle',
+  activeModal: 'none',
   isLoading: false,
   error: null,
 
@@ -102,8 +126,20 @@ export const useGameStore = create<GameStore>((set) => ({
                   },
               },
           },
+          player: {
+              ...state.player,
+              scenarioProgress: {
+                  ...state.player.scenarioProgress,
+                  [currentScenarioSlug]: {
+                      ...currentProgress,
+                      decisions: updatedDecisions,
+                  },
+              },
+          },
       };
   }),
+  setGameStatus: (status) => set({ gameStatus: status }),
+  setActiveModal: (modal) => set({ activeModal: modal }),
   // Implement other actions here
 }));
 
