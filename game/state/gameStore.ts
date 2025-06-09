@@ -44,8 +44,13 @@ interface GameState {
   scenario: ScenarioState;
   isLoading: boolean;
   error: string | null;
-  // Add other global game state like game status (e.g., ' idle', 'in-game', 'game-over')
-  // and potentially UI state related to overlays or modals
+  /**
+   * Tracks the overall status of the game so pages can react to phase changes.
+   * Examples: 'idle' before a scenario starts, 'in-game-exploration',
+   * 'in-game-argument', 'game-over', etc.
+   */
+  gameStatus: 'idle' | 'menu' | 'in-game-exploration' | 'in-game-argument' | 'game-over' | 'paused';
+  // Add other global game state like active modals if needed
 }
 
 // Define the actions that can modify the state
@@ -55,6 +60,8 @@ interface GameActions {
   updateScore: (type: 'utilitarian' | 'deontological' | 'virtue', amount: number) => void;
   setCurrentScenario: (slug: string) => void;
   nextScenarioStep: (choiceOutcome: string) => void;
+  /** Update the current game status */
+  setGameStatus: (status: GameState['gameStatus']) => void;
   // Add more actions for starting/ending scenarios, saving/loading, etc.
 }
 
@@ -76,6 +83,7 @@ export const useGameStore = create<GameStore>((set) => ({
     currentStepIndex: 0,
     scenarioProgress: {},
   },
+  gameStatus: 'idle',
   isLoading: false,
   error: null,
 
@@ -126,6 +134,7 @@ export const useGameStore = create<GameStore>((set) => ({
           },
       };
   }),
+  setGameStatus: (status) => set({ gameStatus: status }),
   // Implement other actions here
 }));
 
