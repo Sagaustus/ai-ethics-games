@@ -1,6 +1,7 @@
 // game/state/gameStore.ts
 import { create } from 'zustand';
 
+// --- State types ---
 interface PlayerState {
   schoolOfThought?: string;
   character?: string;
@@ -9,6 +10,11 @@ interface PlayerState {
     deontological: number;
     virtue: number;
   };
+  /** List of unlocked items (e.g., skin slugs) */
+  inventory: string[];
+  /**
+   * Persist progress information for each scenario so features like Rewind can display completed decisions.
+   */
   scenarioProgress: {
     [scenarioSlug: string]: {
       completed: boolean;
@@ -28,7 +34,9 @@ interface ScenarioState {
       decisions: { stepIndex: number; choiceOutcome: string }[];
     };
   };
+  /** Countdown timer for timed scenarios */
   timer: number;
+  /** Tracks a combo meter for argument chains */
   comboMeter: number;
 }
 
@@ -37,6 +45,7 @@ interface GameState {
   scenario: ScenarioState;
   isLoading: boolean;
   error: string | null;
+  /** Phases: before menu, exploration, argument, game-over, etc. */
   gameStatus:
     | 'idle'
     | 'menu'
@@ -44,6 +53,7 @@ interface GameState {
     | 'in-game-argument'
     | 'game-over'
     | 'paused';
+  /** Which UI modal (if any) is open */
   activeModal:
     | 'none'
     | 'mutation'
@@ -55,6 +65,7 @@ interface GameState {
     | string;
 }
 
+// --- Actions ---
 interface GameActions {
   setSchoolOfThought: (school: string) => void;
   setCharacter: (character: string) => void;
@@ -65,16 +76,19 @@ interface GameActions {
   setActiveModal: (modal: GameState['activeModal']) => void;
   setTimer: (seconds: number) => void;
   setComboMeter: (value: number) => void;
-  /** Resets all game state back to initial values */
+  /** Add a skin slug to the player's inventory if not already unlocked */
+  unlockSkin: (slug: string) => void;
+  /** Reset all game state back to initial defaults */
   resetGame: () => void;
 }
 
 type GameStore = GameState & GameActions;
 
-// Define your initial state in a single object for reuse
+// --- Initial state for reuse ---
 const initialState: GameState = {
   player: {
     scores: { utilitarian: 0, deontological: 0, virtue: 0 },
+    inventory: [],
     scenarioProgress: {},
   },
   scenario: {
@@ -89,8 +103,9 @@ const initialState: GameState = {
   error: null,
 };
 
+// --- Store creation ---
 export const useGameStore = create<GameStore>((set) => ({
-  // Spread your initial state
+  // spread in initial state
   ...initialState,
 
   // Actions
@@ -149,11 +164,19 @@ export const useGameStore = create<GameStore>((set) => ({
 
   setActiveModal: (modal) => set({ activeModal: modal }),
 
-  setTimer: (seconds) =>
-    set((state) => ({ scenario: { ...state.scenario, timer: seconds } })),
+  setTimer: (seconds) => set((state) => ({ scenario: { ...state.scenario, timer: seconds } })),
 
-  setComboMeter: (value) =>
-    set((state) => ({ scenario: { ...state.scenario, comboMeter: value } })),
+  setComboMeter: (value) => set((state) => ({ scenario: { ...state.scenario, comboMeter: value } })),
+
+  unlockSkin: (slug) =>
+    set((state) => ({
+      player: {
+        ...state.player,
+        inventory: state.player.inventory.includes(slug)
+          ? state.player.inventory
+          : [...state.player.inventory, slug],
+      },
+    })),
 
   resetGame: () => set(() => ({ ...initialState })),
 }));
