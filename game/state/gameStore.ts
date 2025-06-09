@@ -3,6 +3,8 @@ import { create } from 'zustand';
 // Define the types for the game state
 // We'll refine these types later in game/types/index.ts
 interface PlayerState {
+  /** Unique identifier for this player */
+  id: string;
   schoolOfThought?: string;
   character?: string;
   scores: {
@@ -10,6 +12,19 @@ interface PlayerState {
     deontological: number;
     virtue: number;
     // Add other scoring categories as needed
+  };
+  /** List of unlocked items (e.g., skins) */
+  inventory: string[];
+  /**
+   * Persist progress information for each scenario so features like the
+   * Rewind page can display completed decisions.
+   */
+  scenarioProgress: {
+    [scenarioSlug: string]: {
+      completed: boolean;
+      highestScore: number;
+      decisions: { stepIndex: number; choiceOutcome: string }[];
+    };
   };
   // Add other player-specific state like inventory, achievements, etc.
 }
@@ -25,6 +40,10 @@ interface ScenarioState {
       decisions: { stepIndex: number; choiceOutcome: string }[];
     };
   };
+  /** Countdown timer for timed scenarios */
+  timer: number;
+  /** Tracks a combo meter for argument chains */
+  comboMeter: number;
   // Add other scenario-specific state
 }
 
@@ -33,17 +52,35 @@ interface GameState {
   scenario: ScenarioState;
   isLoading: boolean;
   error: string | null;
-  // Add other global game state like game status (e.g., ' idle', 'in-game', 'game-over')
-  // and potentially UI state related to overlays or modals
+  /**
+   * Tracks the overall status of the game so pages can react to phase changes.
+   * Examples: 'idle' before a scenario starts, 'in-game-exploration',
+   * 'in-game-argument', 'game-over', etc.
+   */
+  gameStatus: 'idle' | 'menu' | 'in-game-exploration' | 'in-game-argument' | 'game-over' | 'paused';
+  /** Track which modal (if any) is currently open so UI components can react */
+  activeModal: 'none' | 'mutation' | 'voting' | 'plotTwist' | 'achievement' | 'levelUp' | 'unlockOverlay' | string;
 }
 
 // Define the actions that can modify the state
 interface GameActions {
   setSchoolOfThought: (school: string) => void;
   setCharacter: (character: string) => void;
+  /** Set or update the player's unique identifier */
+  setPlayerId: (id: string) => void;
   updateScore: (type: 'utilitarian' | 'deontological' | 'virtue', amount: number) => void;
   setCurrentScenario: (slug: string) => void;
   nextScenarioStep: (choiceOutcome: string) => void;
+  /** Add an item to the player's inventory if not already present */
+  unlockSkin: (slug: string) => void;
+  /** Update the current game status */
+  setGameStatus: (status: GameState['gameStatus']) => void;
+  /** Open or close a modal dialog */
+  setActiveModal: (modal: GameState['activeModal']) => void;
+  /** Set the countdown timer for the current scenario */
+  setTimer: (seconds: number) => void;
+  /** Update the combo meter used during debates */
+  setComboMeter: (value: number) => void;
   // Add more actions for starting/ending scenarios, saving/loading, etc.
 }
 
@@ -54,22 +91,30 @@ type GameStore = GameState & GameActions;
 export const useGameStore = create<GameStore>((set) => ({
   // Initial state
   player: {
+    id: '',
     scores: {
       utilitarian: 0,
       deontological: 0,
       virtue: 0,
     },
+    inventory: [],
+    scenarioProgress: {},
   },
   scenario: {
     currentStepIndex: 0,
     scenarioProgress: {},
+    timer: 0,
+    comboMeter: 0,
   },
+  gameStatus: 'idle',
+  activeModal: 'none',
   isLoading: false,
   error: null,
 
   // Actions
   setSchoolOfThought: (school) => set(state => ({ player: { ...state.player, schoolOfThought: school } })),
   setCharacter: (character) => set(state => ({ player: { ...state.player, character: character } })),
+  setPlayerId: (id) => set(state => ({ player: { ...state.player, id } })),
   updateScore: (type, amount) => set(state => ({
     player: {
       ...state.player,
@@ -102,8 +147,35 @@ export const useGameStore = create<GameStore>((set) => ({
                   },
               },
           },
+          player: {
+              ...state.player,
+              scenarioProgress: {
+                  ...state.player.scenarioProgress,
+                  [currentScenarioSlug]: {
+                      ...currentProgress,
+                      decisions: updatedDecisions,
+                  },
+              },
+          },
       };
   }),
+  setGameStatus: (status) => set({ gameStatus: status }),
+  setActiveModal: (modal) => set({ activeModal: modal }),
+  unlockSkin: (slug) =>
+    set((state) => ({
+      player: {
+        ...state.player,
+        inventory: state.player.inventory.includes(slug)
+          ? state.player.inventory
+          : [...state.player.inventory, slug],
+      },
+    })),
+  setTimer: (seconds) => set(state => ({
+    scenario: { ...state.scenario, timer: seconds }
+  })),
+  setComboMeter: (value) => set(state => ({
+    scenario: { ...state.scenario, comboMeter: value }
+  })),
   // Implement other actions here
 }));
 

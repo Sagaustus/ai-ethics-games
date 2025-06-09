@@ -13,17 +13,21 @@ interface QuoteCardProps {
 }
 
 export default function QuoteCard({ card }: QuoteCardProps) {
-  const [{ isDragging }, drag] = useDrag(() => ({
-    type: 'QUOTE',
-    item: card,
-    collect: (monitor) => ({
-      isDragging: monitor.isDragging(),
+  // v14 array signature provides a ref callback compatible with `ref` props
+  const [{ isDragging }, dragRef] = useDrag<QuoteCardData, void, { isDragging: boolean }>(
+    () => ({
+      type: 'QUOTE',
+      item: card,
+      collect: (monitor) => ({
+        isDragging: monitor.isDragging(),
+      }),
     }),
-  }), [card]);
+    [card]
+  );
 
   return (
     <div
-      ref={drag}
+      ref={dragRef}
       className={`p-4 bg-mindscape-fg/10 border border-mindscape-fg rounded-lg cursor-move select-none 
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
     >
