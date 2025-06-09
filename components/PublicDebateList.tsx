@@ -51,4 +51,5 @@ export default function PublicDebateList({ debates }: PublicDebateListProps) {
         ))}
       </div>
     </div>
+  );
 }
