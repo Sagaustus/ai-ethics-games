@@ -18,9 +18,7 @@ export default function QuoteCard({ card }: QuoteCardProps) {
     () => ({
       type: 'QUOTE',
       item: card,
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
+      collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     }),
     [card]
   );

@@ -3,6 +3,8 @@ import { create } from 'zustand';
 
 // --- State types ---
 interface PlayerState {
+  /** Unique identifier for this player */
+  id: string;
   schoolOfThought?: string;
   character?: string;
   scores: {
@@ -67,6 +69,7 @@ interface GameState {
 
 // --- Actions ---
 interface GameActions {
+  setPlayerId: (id: string) => void;
   setSchoolOfThought: (school: string) => void;
   setCharacter: (character: string) => void;
   updateScore: (type: 'utilitarian' | 'deontological' | 'virtue', amount: number) => void;
@@ -87,6 +90,7 @@ type GameStore = GameState & GameActions;
 // --- Initial state for reuse ---
 const initialState: GameState = {
   player: {
+    id: '',
     scores: { utilitarian: 0, deontological: 0, virtue: 0 },
     inventory: [],
     scenarioProgress: {},
@@ -109,6 +113,9 @@ export const useGameStore = create<GameStore>((set) => ({
   ...initialState,
 
   // Actions
+  setPlayerId: (id) =>
+    set((state) => ({ player: { ...state.player, id } })),
+
   setSchoolOfThought: (school) =>
     set((state) => ({ player: { ...state.player, schoolOfThought: school } })),
 
@@ -119,7 +126,10 @@ export const useGameStore = create<GameStore>((set) => ({
     set((state) => ({
       player: {
         ...state.player,
-        scores: { ...state.player.scores, [type]: state.player.scores[type] + amount },
+        scores: {
+          ...state.player.scores,
+          [type]: state.player.scores[type] + amount,
+        },
       },
     })),
 
@@ -164,9 +174,11 @@ export const useGameStore = create<GameStore>((set) => ({
 
   setActiveModal: (modal) => set({ activeModal: modal }),
 
-  setTimer: (seconds) => set((state) => ({ scenario: { ...state.scenario, timer: seconds } })),
+  setTimer: (seconds) =>
+    set((state) => ({ scenario: { ...state.scenario, timer: seconds } })),
 
-  setComboMeter: (value) => set((state) => ({ scenario: { ...state.scenario, comboMeter: value } })),
+  setComboMeter: (value) =>
+    set((state) => ({ scenario: { ...state.scenario, comboMeter: value } })),
 
   unlockSkin: (slug) =>
     set((state) => ({
