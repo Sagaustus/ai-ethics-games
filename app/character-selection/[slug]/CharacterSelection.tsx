@@ -4,7 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 
 const CharacterSelection: React.FC = () => {
-  const { school } = useParams<{ school: string }>();
+  const { slug } = useParams<{ slug: string }>();
   const router = useRouter();
 
   // Define the characters for each school of thought
@@ -43,9 +43,9 @@ const CharacterSelection: React.FC = () => {
     ],
   };
 
-  const characters = school ? characterOptions[school.toLowerCase()] : [];
+  const characters = slug ? characterOptions[slug.toLowerCase()] : [];
 
-  if (!school || !characters?.length) {
+  if (!slug || !characters?.length) {
     // Redirect to the school selection page if school or characters are invalid
     router.replace("/school-of-thought");
     return null;
@@ -63,7 +63,7 @@ const CharacterSelection: React.FC = () => {
       }}
     >
       <h1 style={{ fontSize: "36px", color: "#ffcc00", marginBottom: "20px" }}>
-        Choose Your Character for {school.replace(/\b\w/g, (char) => char.toUpperCase())}
+        Choose Your Character for {slug.replace(/\b\w/g, (char) => char.toUpperCase())}
       </h1>
       <div
         style={{

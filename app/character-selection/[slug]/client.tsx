@@ -4,10 +4,10 @@ import React from "react";
 import { useRouter } from "next/navigation";
 
 export interface CharacterSelectionProps {
-  school: string; // Define the school prop
+  slug: string; // Define the school slug prop
 }
 
-const CharacterSelection: React.FC<CharacterSelectionProps> = ({ school }) => {
+const CharacterSelection: React.FC<CharacterSelectionProps> = ({ slug }) => {
   const router = useRouter();
 
   const characterOptions: Record<string, { name: string; link: string }[]> = {
@@ -45,10 +45,10 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({ school }) => {
     ],
   };
 
-  const characters = characterOptions[school] || [];
+  const characters = characterOptions[slug] || [];
 
   if (!characters.length) {
-    router.replace("/school-of-thought");
+    router.replace('/school-of-thought');
     return null;
   }
 
@@ -64,7 +64,7 @@ const CharacterSelection: React.FC<CharacterSelectionProps> = ({ school }) => {
       }}
     >
       <h1 style={{ fontSize: "36px", color: "#ffcc00", marginBottom: "20px" }}>
-        You have chosen {school.replace(/\b\w/g, (char) => char.toUpperCase())}.
+        You have chosen {slug.replace(/\b\w/g, (char) => char.toUpperCase())}.
       </h1>
       <p style={{ fontSize: "18px", color: "#ddd", marginBottom: "20px" }}>Now, choose your character:</p>
       <div
