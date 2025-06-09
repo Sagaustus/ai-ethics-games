@@ -1,7 +1,7 @@
 // app/api/game/scenarios.ts
 
 import { NextResponse } from 'next/server';
-import { createClient } from '@/utils/supabase/server'; // Assuming you'll create a Supabase client utility
+import { supabase } from '@/utils/supabase/server';
 
 // Assuming you have a utility to create a Supabase client instance.
 // Example: create a file like `utils/supabase/server.ts` with:
@@ -14,8 +14,6 @@ export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const scenarioSlug = searchParams.get('slug');
 
-  // Assuming your Supabase client is initialized and configured
-  const supabase = createClient();
 
   try {
     if (scenarioSlug) {
