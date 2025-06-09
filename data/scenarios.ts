@@ -22,4 +22,40 @@ export const scenarios: Scenario[] = [
   { slug: 'the-biased-judge',        name: 'The Biased Judge',        icon: '/img/biased-judge.png' },
   { slug: 'the-artificial-artist',   name: 'The Artificial Artist',   icon: '/img/artificial-artist.png' },
   { slug: 'the-algorithmic-doctor',  name: 'The Algorithmic Doctor',  icon: '/img/algorithmic-doctor.png' },
-]
+];
+
+// Detailed scenario modules used throughout the game
+import watchfulEyeScenario from './scenarios/watchfulEyeScenario';
+import selfDrivingDilemmaScenario from './scenarios/selfDrivingDilemmaScenario';
+import censoredWorldScenario from './scenarios/censoredWorldScenario';
+import faceOfDeceptionScenario from './scenarios/faceOfDeceptionScenario';
+import ethicalSoldierScenario from './scenarios/ethicalSoldierScenario';
+import carbonFootprintScenario from './scenarios/carbonFootprintScenario';
+import perfectPartnerScenario from './scenarios/perfectPartnerScenario';
+import consciousMachineScenario from './scenarios/consciousMachineScenario';
+import rogueCoderScenario from './scenarios/rogueCoderScenario';
+import joblessFutureScenario from './scenarios/joblessFutureScenario';
+import learningMachineScenario from './scenarios/learningMachineScenario';
+import minorityReportScenario from './scenarios/minorityReportScenario';
+import biasedJudgeScenario from './scenarios/biasedJudgeScenario';
+import artificialArtistScenario from './scenarios/artificialArtistScenario';
+import algorithmicDoctorScenario from './scenarios/algorithmicDoctorScenario';
+
+// Export as an object keyed by scenario identifier for easy lookup
+export const scenarioData = {
+  watchfulEyeScenario,
+  selfDrivingDilemmaScenario,
+  censoredWorldScenario,
+  faceOfDeceptionScenario,
+  ethicalSoldierScenario,
+  carbonFootprintScenario,
+  perfectPartnerScenario,
+  consciousMachineScenario,
+  rogueCoderScenario,
+  joblessFutureScenario,
+  learningMachineScenario,
+  minorityReportScenario,
+  biasedJudgeScenario,
+  artificialArtistScenario,
+  algorithmicDoctorScenario,
+};
