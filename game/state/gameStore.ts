@@ -37,8 +37,22 @@ interface GameState {
   scenario: ScenarioState;
   isLoading: boolean;
   error: string | null;
-  gameStatus: 'idle' | 'menu' | 'in-game-exploration' | 'in-game-argument' | 'game-over' | 'paused';
-  activeModal: 'none' | 'mutation' | 'voting' | 'plotTwist' | 'achievement' | 'levelUp' | 'unlockOverlay' | string;
+  gameStatus:
+    | 'idle'
+    | 'menu'
+    | 'in-game-exploration'
+    | 'in-game-argument'
+    | 'game-over'
+    | 'paused';
+  activeModal:
+    | 'none'
+    | 'mutation'
+    | 'voting'
+    | 'plotTwist'
+    | 'achievement'
+    | 'levelUp'
+    | 'unlockOverlay'
+    | string;
 }
 
 interface GameActions {
@@ -51,12 +65,14 @@ interface GameActions {
   setActiveModal: (modal: GameState['activeModal']) => void;
   setTimer: (seconds: number) => void;
   setComboMeter: (value: number) => void;
+  /** Resets all game state back to initial values */
+  resetGame: () => void;
 }
 
 type GameStore = GameState & GameActions;
 
-export const useGameStore = create<GameStore>((set) => ({
-  // Initial state
+// Define your initial state in a single object for reuse
+const initialState: GameState = {
   player: {
     scores: { utilitarian: 0, deontological: 0, virtue: 0 },
     scenarioProgress: {},
@@ -71,6 +87,11 @@ export const useGameStore = create<GameStore>((set) => ({
   activeModal: 'none',
   isLoading: false,
   error: null,
+};
+
+export const useGameStore = create<GameStore>((set) => ({
+  // Spread your initial state
+  ...initialState,
 
   // Actions
   setSchoolOfThought: (school) =>
@@ -105,7 +126,6 @@ export const useGameStore = create<GameStore>((set) => ({
         ...curr.decisions,
         { stepIndex: state.scenario.currentStepIndex, choiceOutcome },
       ];
-
       return {
         scenario: {
           ...state.scenario,
@@ -129,11 +149,11 @@ export const useGameStore = create<GameStore>((set) => ({
 
   setActiveModal: (modal) => set({ activeModal: modal }),
 
-  setTimer: (seconds) => set((state) => ({
-    scenario: { ...state.scenario, timer: seconds }
-  })),
+  setTimer: (seconds) =>
+    set((state) => ({ scenario: { ...state.scenario, timer: seconds } })),
 
-  setComboMeter: (value) => set((state) => ({
-    scenario: { ...state.scenario, comboMeter: value }
-  })),
+  setComboMeter: (value) =>
+    set((state) => ({ scenario: { ...state.scenario, comboMeter: value } })),
+
+  resetGame: () => set(() => ({ ...initialState })),
 }));
