@@ -11,6 +11,17 @@ interface PlayerState {
     virtue: number;
     // Add other scoring categories as needed
   };
+  /**
+   * Persist progress information for each scenario so features like the
+   * Rewind page can display completed decisions.
+   */
+  scenarioProgress: {
+    [scenarioSlug: string]: {
+      completed: boolean;
+      highestScore: number;
+      decisions: { stepIndex: number; choiceOutcome: string }[];
+    };
+  };
   // Add other player-specific state like inventory, achievements, etc.
 }
 
@@ -59,6 +70,7 @@ export const useGameStore = create<GameStore>((set) => ({
       deontological: 0,
       virtue: 0,
     },
+    scenarioProgress: {},
   },
   scenario: {
     currentStepIndex: 0,
@@ -96,6 +108,16 @@ export const useGameStore = create<GameStore>((set) => ({
               currentStepIndex: state.scenario.currentStepIndex + 1,
                scenarioProgress: {
                   ...state.scenario.scenarioProgress,
+                  [currentScenarioSlug]: {
+                      ...currentProgress,
+                      decisions: updatedDecisions,
+                  },
+              },
+          },
+          player: {
+              ...state.player,
+              scenarioProgress: {
+                  ...state.player.scenarioProgress,
                   [currentScenarioSlug]: {
                       ...currentProgress,
                       decisions: updatedDecisions,

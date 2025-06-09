@@ -14,6 +14,13 @@ export interface PlayerState {
     };
     achievements?: string[]; // Optional: Array of achievement IDs
     inventory?: string[]; // Optional: Player inventory items (skins, power-ups, etc.)
+    /**
+     * Tracks scenario progress per slug so pages like Rewind can display
+     * a history of completed scenarios and choices.
+     */
+    scenarioProgress: {
+      [scenarioSlug: string]: ScenarioProgress;
+    };
     // Add other player-specific state
   }
   

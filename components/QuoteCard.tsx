@@ -13,7 +13,8 @@ interface QuoteCardProps {
 }
 
 export default function QuoteCard({ card }: QuoteCardProps) {
-  const [{ isDragging }, drag] = useDrag(() => ({
+  // `useDrag` returns a drag ref compatible with the `ref` prop
+  const [{ isDragging }, dragRef] = useDrag(() => ({
     type: 'QUOTE',
     item: card,
     collect: (monitor) => ({
@@ -23,7 +24,7 @@ export default function QuoteCard({ card }: QuoteCardProps) {
 
   return (
     <div
-      ref={drag}
+      ref={dragRef}
       className={`p-4 bg-mindscape-fg/10 border border-mindscape-fg rounded-lg cursor-move select-none 
         ${isDragging ? 'opacity-50' : 'opacity-100'}`}
     >
