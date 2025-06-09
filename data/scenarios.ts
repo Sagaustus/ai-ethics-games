@@ -4,6 +4,7 @@ export interface Scenario {
   slug: string
   name: string
   icon?: string
+  description?: string
 }
 
 export const scenarios: Scenario[] = [
