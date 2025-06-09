@@ -38,4 +38,4 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
-next-env.d.ts
+# Allow TypeScript's next-env.d.ts to be checked into version control
