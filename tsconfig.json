@@ -4,7 +4,9 @@
     "baseUrl": ".", // Ensure the base URL is the project root
     "paths": {
       "@/data/*": ["data/*"], // Alias for data folder
-      "@/components/*": ["components/*"] // Alias for components folder
+      "@/components/*": ["components/*"], // Alias for components folder
+      "@/hooks/*": ["hooks/*"], // Alias for hooks folder
+      "@/game/*": ["game/*"] // Alias for game folder
     },
     "lib": [
       "dom",
