@@ -13,23 +13,27 @@ interface QuoteCardProps {
 }
 
 export default function QuoteCard({ card }: QuoteCardProps) {
-  // v14 array signature provides a ref callback compatible with `ref` props
-  const [{ isDragging }, dragRef] = useDrag<QuoteCardData, void, { isDragging: boolean }>(
+  // useDrag returns a legacy connector, so we wrap it in a ref callback
+  const [{ isDragging }, drag] = useDrag<QuoteCardData, void, { isDragging: boolean }>(
     () => ({
       type: 'QUOTE',
       item: card,
-      collect: (monitor) => ({
-        isDragging: monitor.isDragging(),
-      }),
+      collect: (monitor) => ({ isDragging: monitor.isDragging() }),
     }),
     [card]
   );
 
   return (
     <div
-      ref={dragRef}
-      className={`p-4 bg-mindscape-fg/10 border border-mindscape-fg rounded-lg cursor-move select-none 
-        ${isDragging ? 'opacity-50' : 'opacity-100'}`}
+      ref={(node: HTMLDivElement | null) => {
+        if (node) drag(node);
+      }}
+      className={`
+        p-4 bg-mindscape-fg/10
+        border border-mindscape-fg
+        rounded-lg cursor-move select-none
+        ${isDragging ? 'opacity-50' : 'opacity-100'}
+      `}
     >
       <p className="text-sm">{card.text}</p>
     </div>

@@ -1,7 +1,6 @@
+// game/state/gameStore.ts
 import { create } from 'zustand';
 
-// Define the types for the game state
-// We'll refine these types later in game/types/index.ts
 interface PlayerState {
   /** Unique identifier for this player */
   id: string;
@@ -11,40 +10,29 @@ interface PlayerState {
     utilitarian: number;
     deontological: number;
     virtue: number;
-    // Add other scoring categories as needed
   };
-  /** List of unlocked items (e.g., skins) */
+  /** Unlocked skin slugs */
   inventory: string[];
   /**
-   * Persist progress information for each scenario so features like the
-   * Rewind page can display completed decisions.
+   * Progress for each scenario (for Rewind, etc.)
    */
-  scenarioProgress: {
-    [scenarioSlug: string]: {
-      completed: boolean;
-      highestScore: number;
-      decisions: { stepIndex: number; choiceOutcome: string }[];
-    };
-  };
-  // Add other player-specific state like inventory, achievements, etc.
+  scenarioProgress: Record<
+    string,
+    { completed: boolean; highestScore: number; decisions: { stepIndex: number; choiceOutcome: string }[] }
+  >;
 }
 
 interface ScenarioState {
   currentScenarioSlug?: string;
   currentStepIndex: number;
-  scenarioProgress: {
-    [scenarioSlug: string]: {
-      completed: boolean;
-      highestScore: number;
-      // Store decisions made in this scenario for 'Rewind' or state restoration
-      decisions: { stepIndex: number; choiceOutcome: string }[];
-    };
-  };
+  scenarioProgress: Record<
+    string,
+    { completed: boolean; highestScore: number; decisions: { stepIndex: number; choiceOutcome: string }[] }
+  >;
   /** Countdown timer for timed scenarios */
   timer: number;
   /** Tracks a combo meter for argument chains */
   comboMeter: number;
-  // Add other scenario-specific state
 }
 
 interface GameState {
@@ -52,51 +40,33 @@ interface GameState {
   scenario: ScenarioState;
   isLoading: boolean;
   error: string | null;
-  /**
-   * Tracks the overall status of the game so pages can react to phase changes.
-   * Examples: 'idle' before a scenario starts, 'in-game-exploration',
-   * 'in-game-argument', 'game-over', etc.
-   */
+  /** Game phases */
   gameStatus: 'idle' | 'menu' | 'in-game-exploration' | 'in-game-argument' | 'game-over' | 'paused';
-  /** Track which modal (if any) is currently open so UI components can react */
+  /** Which modal, if any, is open */
   activeModal: 'none' | 'mutation' | 'voting' | 'plotTwist' | 'achievement' | 'levelUp' | 'unlockOverlay' | string;
 }
 
-// Define the actions that can modify the state
 interface GameActions {
+  setPlayerId: (id: string) => void;
   setSchoolOfThought: (school: string) => void;
   setCharacter: (character: string) => void;
-  /** Set or update the player's unique identifier */
-  setPlayerId: (id: string) => void;
-  updateScore: (type: 'utilitarian' | 'deontological' | 'virtue', amount: number) => void;
+  updateScore: (type: keyof PlayerState['scores'], amount: number) => void;
   setCurrentScenario: (slug: string) => void;
   nextScenarioStep: (choiceOutcome: string) => void;
-  /** Add an item to the player's inventory if not already present */
-  unlockSkin: (slug: string) => void;
-  /** Update the current game status */
   setGameStatus: (status: GameState['gameStatus']) => void;
-  /** Open or close a modal dialog */
   setActiveModal: (modal: GameState['activeModal']) => void;
-  /** Set the countdown timer for the current scenario */
   setTimer: (seconds: number) => void;
-  /** Update the combo meter used during debates */
   setComboMeter: (value: number) => void;
-  // Add more actions for starting/ending scenarios, saving/loading, etc.
+  unlockSkin: (slug: string) => void;
+  resetGame: () => void;
 }
 
-// Combine the state and actions into the store type
 type GameStore = GameState & GameActions;
 
-// Create the Zustand store
-export const useGameStore = create<GameStore>((set) => ({
-  // Initial state
+const initialState: GameState = {
   player: {
     id: '',
-    scores: {
-      utilitarian: 0,
-      deontological: 0,
-      virtue: 0,
-    },
+    scores: { utilitarian: 0, deontological: 0, virtue: 0 },
     inventory: [],
     scenarioProgress: {},
   },
@@ -110,81 +80,61 @@ export const useGameStore = create<GameStore>((set) => ({
   activeModal: 'none',
   isLoading: false,
   error: null,
+};
 
-  // Actions
-  setSchoolOfThought: (school) => set(state => ({ player: { ...state.player, schoolOfThought: school } })),
-  setCharacter: (character) => set(state => ({ player: { ...state.player, character: character } })),
-  setPlayerId: (id) => set(state => ({ player: { ...state.player, id } })),
-  updateScore: (type, amount) => set(state => ({
-    player: {
-      ...state.player,
-      scores: {
-        ...state.player.scores,
-        [type]: state.player.scores[type] + amount,
-      },
-    },
-  })),
-  setCurrentScenario: (slug) => set({ scenario: { ...useGameStore.getState().scenario, currentScenarioSlug: slug, currentStepIndex: 0 } }),
-  nextScenarioStep: (choiceOutcome) => set(state => {
-      const currentScenarioSlug = state.scenario.currentScenarioSlug;
-      if (!currentScenarioSlug) {
-          console.error("Cannot proceed to next step: no scenario selected.");
-          return state; // Return current state if no scenario is selected
-      }
+export const useGameStore = create<GameStore>((set) => ({
+  ...initialState,
 
-      const currentProgress = state.scenario.scenarioProgress[currentScenarioSlug] || { completed: false, highestScore: 0, decisions: [] };
-      const updatedDecisions = [...currentProgress.decisions, { stepIndex: state.scenario.currentStepIndex, choiceOutcome }];
+  setPlayerId: (id) => set((s) => ({ player: { ...s.player, id } })),
 
-      return {
-          scenario: {
-              ...state.scenario,
-              currentStepIndex: state.scenario.currentStepIndex + 1,
-               scenarioProgress: {
-                  ...state.scenario.scenarioProgress,
-                  [currentScenarioSlug]: {
-                      ...currentProgress,
-                      decisions: updatedDecisions,
-                  },
-              },
-          },
-          player: {
-              ...state.player,
-              scenarioProgress: {
-                  ...state.player.scenarioProgress,
-                  [currentScenarioSlug]: {
-                      ...currentProgress,
-                      decisions: updatedDecisions,
-                  },
-              },
-          },
-      };
-  }),
-  setGameStatus: (status) => set({ gameStatus: status }),
-  setActiveModal: (modal) => set({ activeModal: modal }),
-  unlockSkin: (slug) =>
-    set((state) => ({
+  setSchoolOfThought: (school) => set((s) => ({ player: { ...s.player, schoolOfThought: school } })),
+
+  setCharacter: (character) => set((s) => ({ player: { ...s.player, character } })),
+
+  updateScore: (type, amount) =>
+    set((s) => ({
       player: {
-        ...state.player,
-        inventory: state.player.inventory.includes(slug)
-          ? state.player.inventory
-          : [...state.player.inventory, slug],
+        ...s.player,
+        scores: { ...s.player.scores, [type]: s.player.scores[type] + amount },
       },
     })),
-  setTimer: (seconds) => set(state => ({
-    scenario: { ...state.scenario, timer: seconds }
-  })),
-  setComboMeter: (value) => set(state => ({
-    scenario: { ...state.scenario, comboMeter: value }
-  })),
-  // Implement other actions here
-}));
 
-// Optional: Hydration for server-side rendering if needed
-// This is a more advanced topic and might require additional setup
-// import { useLayoutEffect } from 'react';
-// const useHydration = () => {
-//   useLayoutEffect(() => {
-//     useGameStore.persist.rehydrate();
-//   }, []);
-// };
-// export { useHydration };
+  setCurrentScenario: (slug) => set((s) => ({ scenario: { ...s.scenario, currentScenarioSlug: slug, currentStepIndex: 0 } })),
+
+  nextScenarioStep: (choiceOutcome) =>
+    set((s) => {
+      const slug = s.scenario.currentScenarioSlug;
+      if (!slug) return s;
+      const curr = s.scenario.scenarioProgress[slug] || { completed: false, highestScore: 0, decisions: [] };
+      const updated = [...curr.decisions, { stepIndex: s.scenario.currentStepIndex, choiceOutcome }];
+      return {
+        scenario: {
+          ...s.scenario,
+          currentStepIndex: s.scenario.currentStepIndex + 1,
+          scenarioProgress: { ...s.scenario.scenarioProgress, [slug]: { ...curr, decisions: updated } },
+        },
+        player: {
+          ...s.player,
+          scenarioProgress: { ...s.player.scenarioProgress, [slug]: { ...curr, decisions: updated } },
+        },
+      };
+    }),
+
+  setGameStatus: (status) => set({ gameStatus: status }),
+
+  setActiveModal: (modal) => set({ activeModal: modal }),
+
+  setTimer: (seconds) => set((s) => ({ scenario: { ...s.scenario, timer: seconds } })),
+
+  setComboMeter: (value) => set((s) => ({ scenario: { ...s.scenario, comboMeter: value } })),
+
+  unlockSkin: (slug) =>
+    set((s) => ({
+      player: {
+        ...s.player,
+        inventory: s.player.inventory.includes(slug) ? s.player.inventory : [...s.player.inventory, slug],
+      },
+    })),
+
+  resetGame: () => set(() => ({ ...initialState })),
+}));
