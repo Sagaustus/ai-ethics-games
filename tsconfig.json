@@ -6,7 +6,8 @@
       "@/data/*": ["data/*"], // Alias for data folder
       "@/components/*": ["components/*"], // Alias for components folder
       "@/hooks/*": ["hooks/*"], // Alias for hooks folder
-      "@/game/*": ["game/*"] // Alias for game folder
+      "@/game/*": ["game/*"], // Alias for game folder
+      "@/utils/*": ["utils/*"] // Alias for utils folder
     },
     "lib": [
       "dom",
