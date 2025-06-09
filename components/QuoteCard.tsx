@@ -13,7 +13,7 @@ interface QuoteCardProps {
 }
 
 export default function QuoteCard({ card }: QuoteCardProps) {
-  // useDrag returns a legacy connector, so we wrap it in a ref callback
+  // useDrag returns a legacy connector, so wrap it in a ref callback
   const [{ isDragging }, drag] = useDrag<QuoteCardData, void, { isDragging: boolean }>(
     () => ({
       type: 'QUOTE',
