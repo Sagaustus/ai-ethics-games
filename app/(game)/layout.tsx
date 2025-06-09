@@ -1,8 +1,10 @@
 // app/(game)/layout.tsx
+'use client';
 
-import ClientLayout from '@/components/layout/ClientLayout'; // Assuming you'll keep a ClientLayout for context/providers
-import Navbar from '@/components/layout/Navbar'; // Import your Navbar component
-import Footer from '@/components/layout/Footer'; // Import your Footer component
+import React from 'react';
+import ClientLayout from '@/components/layout/ClientLayout';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 
 interface GameLayoutProps {
   children: React.ReactNode;
@@ -15,14 +17,14 @@ interface GameLayoutProps {
 const GameLayout: React.FC<GameLayoutProps> = ({ children }) => {
   return (
     <ClientLayout>
-      {/* You can include the Navbar here if it should appear on all game pages */}
+      {/* Uncomment if you want a navbar across all game pages */}
       {/* <Navbar /> */}
 
       <main className="flex flex-col items-center justify-center min-h-screen py-2">
-        {children} {/* The content of the specific game page */}
+        {children}
       </main>
 
-      {/* You can include the Footer here if it should appear on all game pages */}
+      {/* Uncomment if you want a footer across all game pages */}
       {/* <Footer /> */}
     </ClientLayout>
   );
