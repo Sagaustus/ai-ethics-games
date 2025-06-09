@@ -5,28 +5,35 @@ import { useDrop } from 'react-dnd';
 import { QuoteCardData } from './QuoteCard';
 
 interface QuoteDropZoneProps {
-  onDrop: (card: QuoteCardData) => void;
+  onDrop: (item: QuoteCardData) => void;
 }
 
 export default function QuoteDropZone({ onDrop }: QuoteDropZoneProps) {
-  const [{ isOver }, drop] = useDrop(() => ({
-    accept: 'QUOTE',
-    drop: (item: QuoteCardData) => onDrop(item),
-    collect: (monitor) => ({
-      isOver: monitor.isOver(),
+  const [{ isOver }, drop] = useDrop<QuoteCardData, void, { isOver: boolean }>(
+    () => ({
+      accept: 'QUOTE',
+      drop: (item) => onDrop(item),
+      collect: (monitor) => ({
+        isOver: monitor.isOver(),
+      }),
     }),
-  }), [onDrop]);
+    [onDrop]
+  );
 
   return (
     <div
-      ref={drop}
-      className={`h-40 border-2 border-dashed rounded-lg p-4 flex items-center justify-center
+      ref={(node: HTMLDivElement | null) => {
+        if (node) {
+          drop(node);
+        }
+      }}
+      className={`h-40 border-2 border-dashed rounded-lg p-4 flex items-center justify-center 
         ${isOver ? 'border-portal-gold bg-portal-gold/10' : 'border-mindscape-fg/50'}`}
     >
       {isOver ? (
-        <span className="text-portal-gold font-semibold">Release to Cast Quote</span>
+        <p className="text-portal-gold">Drop here!</p>
       ) : (
-        <span className="text-mindscape-fg/80">Drag quote here</span>
+        <p className="text-mindscape-fg/70">Drag quote here</p>
       )}
     </div>
   );
