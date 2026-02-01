@@ -1,0 +1,245 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "## 11) Library design: provider-agnostic LLM primitives for Spyral",
+        "",
+        "This section specifies the notebook-facing API and the design constraints that keep LLM use accountable in DH workflows.",
+        "",
+        "### Design principles",
+        "",
+        "1. **Provider agnosticism**: notebooks express *intent* (summarize, classify, chat-with-evidence), not vendor details. Provider config is a single settings cell.",
+        "2. **Evidence-first contracts**: every call that can make interpretive claims accepts an explicit `evidence` payload (passages/tables/counts) and returns outputs that reference that evidence.",
+        "3. **Structured outputs**: default to JSON objects suitable for downstream tables/filters/visualizations.",
+        "4. **Provenance by default**: log prompt, parameters, model/provider id, timestamps, and hashes of input payloads."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "### Proposed notebook API (minimal surface area)",
+        "",
+        "The library exposes a small set of primitives that align with common DH tasks:",
+        "",
+        "1. `chat(prompt, evidence, options)` → bounded dialogue; must disclose evidence used; discourages unsupported claims.",
+        "2. `summarize(data, constraints, options)` → structured synthesis (bullets/sections/claims-with-evidence).",
+        "3. `classifyMany(items, schema, instructions, options)` → constrained annotation at scale; returns JSON rows with labels and evidence pointers.",
+        "4. `extractMany(items, schema, instructions, options)` → information extraction into a fixed JSON schema.",
+        "",
+        "All functions return an object like:",
+        "",
+        "- `ok`, `provider`, `model`, `timestamp_utc`",
+        "- `input_hash_sha256` (hash of payload)",
+        "- `output` (structured JSON) plus optional `raw_text` for debugging"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "language": "javascript"
+      },
+      "source": [
+        "// Settings cell: provider configuration (conceptual)",
+        "// In your current deployment, these intents are implemented via Voyant endpoints (/llm/*).",
+        "// The long-term goal: swap provider without changing analysis code.",
+        "",
+        "const LLM_CONFIG = {",
+        "  provider: \"local-voyant-ollama\",",
+        "  baseUrl: location.origin,",
+        "  endpoints: {",
+        "    chat: \"/llm/chat\",",
+        "    summarize: \"/llm/summarize\",",
+        "    search: \"/llm/search\",",
+        "    topicLabels: \"/llm/topic-labels\",",
+        "    metadataEnrich: \"/llm/metadata-enrich\",",
+        "    compare: \"/llm/compare\"",
+        "  },",
+        "  model: \"llama3.2:3b\",",
+        "  numPredict: 256",
+        "};",
+        "",
+        "LLM_CONFIG;"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "## 12) Accountability patterns (what the notebook should *force into view*)",
+        "",
+        "### Pattern A: Retrieval → Display → LLM",
+        "",
+        "1. Retrieve passages (KWIC/contexts) with Voyant services.",
+        "2. Display those passages in the notebook (or embed a Voyant panel).",
+        "3. Send *only that displayed evidence* to the LLM.",
+        "",
+        "This makes the interpretive step interruptible and criticizable: readers can dispute the evidence selection, not just the model output.",
+        "",
+        "### Pattern B: Structured annotation, not essay writing",
+        "",
+        "LLM outputs are treated as annotation layers (labels, justifications, evidence pointers) that can be counted/filtered/visualized and compared across models."
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "language": "javascript"
+      },
+      "source": [
+        "// Example: evidence-first 'chat' using KWIC contexts as the explicit evidence payload",
+        "",
+        "async function postForm(path, params) {",
+        "  const form = new URLSearchParams();",
+        "  Object.entries(params).forEach(([k, v]) => {",
+        "    if (v === undefined || v === null) return;",
+        "    const s = String(v);",
+        "    if (s.length === 0) return;",
+        "    form.set(k, s);",
+        "  });",
+        "  const res = await fetch(path, {",
+        "    method: \"POST\",",
+        "    headers: { \"Content-Type\": \"application/x-www-form-urlencoded; charset=UTF-8\" },",
+        "    body: form.toString()",
+        "  });",
+        "  const text = await res.text();",
+        "  const json = JSON.parse(text);",
+        "  if (!res.ok || !json.ok) throw new Error(text.slice(0, 400));",
+        "  return json;",
+        "}",
+        "",
+        "const query = \"forest\";",
+        "const contexts = await postForm(LLM_CONFIG.endpoints.search, {",
+        "  corpus: myCorpus.id(),",
+        "  query,",
+        "  limit: 8",
+        "});",
+        "",
+        "// Display evidence (compact)",
+        "(contexts.contexts || []).map(c => ({",
+        "  docIndex: c.docIndex,",
+        "  left: c.left,",
+        "  middle: c.middle,",
+        "  right: c.right",
+        "}));"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "metadata": {
+        "language": "javascript"
+      },
+      "source": [
+        "// Now: bounded chat using only the retrieval query (server re-fetches passages and returns them too).",
+        "// A stricter variant would send the full contexts payload; this deployment uses query-based retrieval.",
+        "",
+        "const chat = await postForm(LLM_CONFIG.endpoints.chat, {",
+        "  corpus: myCorpus.id(),",
+        "  query,",
+        "  limit: 8,",
+        "  message: \"Using only the retrieved passages, what rhetorical role does 'forest' play?\"",
+        "});",
+        "",
+        "{",
+        "  model: chat.model,",
+        "  reply: (chat.reply || \"\").slice(0, 600),",
+        "  contexts_count: (chat.contexts || []).length",
+        "};"
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "## 13) Tutorial suite (staged notebooks for teaching)",
+        "",
+        "The tutorial sequence is designed for students with minimal programming experience and for instructors who want replicable classroom activities. Each notebook ends with a short checklist of what counts as an *accountable* result.",
+        "",
+        "### Tutorial 1 — “From ELIZA to LLMs: skepticism as a skill”",
+        "- Goal: contrast scripted conversation (Veliza/ELIZA lineage) with LLM conversation.",
+        "- Method: show how plausible talk can be produced by shallow patterning; then show how an LLM can improvise; then constrain it to evidence and observe the shift.",
+        "- Checkpoint: the notebook must display retrieved passages that justify any claim.",
+        "",
+        "### Tutorial 2 — “Summarization with constraints”",
+        "- Goal: treat summarization as structured synthesis, not replacement reading.",
+        "- Method: define constraints (bullets, max words, mandatory citations to retrieved contexts).",
+        "- Checkpoint: summary includes explicit references to displayed evidence.",
+        "",
+        "### Tutorial 3 — “Annotation at scale: classifyMany”",
+        "- Goal: treat the LLM as a fallible annotator over many passages.",
+        "- Method: define a custom schema; classify KWIC windows; compute label distributions over segments/chapters.",
+        "- Checkpoint: disagreements are recorded; students revise schema and re-run.",
+        "",
+        "### Tutorial 4 — “Topic models: from terms to contestable labels”",
+        "- Goal: label topics while preserving statistical grounding.",
+        "- Method: extract top terms + representative passages; propose 2–4 word labels; justify with pointers to terms/passages.",
+        "- Checkpoint: labels compared across runs/models; instability becomes a discussion point."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "## 14) Case-study pattern templates (reusable notebook recipes)",
+        "",
+        "### Template: character description across narrative time",
+        "1. Identify target entity (character name variants).",
+        "2. Retrieve all contexts (KWIC) for that entity.",
+        "3. Partition contexts by narrative time (chapter/segment).",
+        "4. Classify each passage with an affect schema defined in-notebook.",
+        "5. Visualize label counts over time; compare with collocates/trends.",
+        "6. Constrained synthesis: produce a short sketch that cites counts and exemplar passages (not external biography or generic priors).",
+        "",
+        "### Template: compare two documents / two corpora",
+        "1. Summarize each with identical constraints.",
+        "2. Compare: similarities/differences, tone/style signals, and “what evidence would change our minds?”",
+        "3. Capture provenance for each run so differences can be traced to model/provider/parameters."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "## 15) Implementation note: notebook sandboxing and UI safety",
+        "",
+        "Embedding interactive tools inside notebook outputs requires careful attention to browser sandboxing and security policies.",
+        "",
+        "In practice, a Spyral tool output is often an `<iframe>` string. If the iframe is sandboxed without `allow-scripts`, button clicks appear to do nothing because event handlers never attach. A robust approach is to:",
+        "",
+        "- Allow scripts within the embedded tool iframe **only** for trusted, same-origin content.",
+        "- Prefer structured POSTs to same-origin endpoints, and display raw JSON fallback when scripting is restricted.",
+        "- Keep LLM endpoints behind the same origin as Voyant/Spyral to simplify CORS and credential handling."
+      ]
+    },
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "language": "markdown"
+      },
+      "source": [
+        "## 16) References (starter list)",
+        "",
+        "- Weizenbaum, Joseph. 1966. “ELIZA—A Computer Program for the Study of Natural Language Communication.”",
+        "- Knuth, Donald. 1984. “Literate Programming.”",
+        "- Rockwell, Geoffrey & Sinclair, Stéfan. 2016. *Hermeneutica* account of computer-assisted interpretation (as discussed in Voyant contexts).",
+        "- Rockwell et al. 1999. On interface rhetoric and the politics of interactivity/visualization (as referenced in your conclusion).",
+        "",
+        "Add venue-specific formatting later (MLA/Chicago/etc.)."
+      ]
+    }
+  ]
+}

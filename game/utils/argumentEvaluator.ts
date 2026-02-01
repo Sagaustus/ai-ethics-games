@@ -1,7 +1,7 @@
 // game/utils/argumentEvaluator.ts
 
-import { Argument, GameState, PlayerState, Scenario } from "../types";
-import { DebateData } from "../types"; // Assuming DebateData type is defined in types/index.ts
+import { Argument, PlayerState } from "../types";
+import { DebateData } from "../types";
 
 /**
  * Evaluates a player's chosen argument against the opponent's stance
@@ -9,24 +9,20 @@ import { DebateData } from "../types"; // Assuming DebateData type is defined in
  * @param playerSchool The player's chosen school of thought slug.
  * @param opponentSchool The opponent's school of thought slug.
  * @param chosenArgument The argument chosen by the player.
- * @param scenarioContext The current scenario data or relevant context.
- * @param currentGameState The current state of the game (scores, etc.).
  * @returns An object detailing the outcome of the argument.
  */
 export const evaluateArgument = (
   playerSchool: string,
   opponentSchool: string,
-  chosenArgument: Argument,
-  scenarioContext: Scenario, // Use the Scenario type
-  currentGameState: GameState // Use the GameState type
+    chosenArgument: Argument
 ): ArgumentEvaluationOutcome => {
   // This is a simplified evaluation logic.
   // A more advanced version could involve:
   // - Mapping arguments to specific philosophical principles
   // - Checking for consistency with the player's chosen school
   // - Comparing against the opponent's school and potential weaknesses
-  // - Using LLM feedback based on the argument text and context
-  // - Considering previous arguments in the debate
+    // - Using richer rubric-based feedback
+    // - Considering previous arguments in the debate
 
   let scoreChanges: PlayerState['scores'] = { utilitarian: 0, deontological: 0, virtue: 0 };
   let feedback = "Your argument was noted.";
@@ -50,9 +46,7 @@ export const evaluateArgument = (
       // scoreChanges[playerSchool.toLowerCase()] -= 5; // Example penalty
   }
 
-  // Example: Logic considering opponent school (very basic)
-  // If opponent is Utilitarian, arguments based on consequences might be more effective
-  // If opponent is Deontological, arguments based on duties/rules might be more effective
+    // TODO: incorporate opponent-school matchups in scoring.
 
   return {
     scoreChanges,
@@ -86,7 +80,6 @@ export interface ArgumentEvaluationOutcome {
 export const generateNpcRebuttal = (
     playerArgument: Argument,
     debateData: DebateData, // Use the DebateData type
-    scenarioContext: Scenario
 ): string => {
     // Basic logic: just pick a random rebuttal for now.
     // Advanced logic could pick a rebuttal that specifically targets the player's argument

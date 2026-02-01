@@ -6,7 +6,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useGameState } from '@/hooks/useGameState';
-import { Scenario } from '@/game/types'; // Import the Scenario type
+// The API can return either DB-backed scenarios or local-fallback scenarios.
+type ScenarioListItem = {
+  slug: string;
+  title?: string;
+  name?: string;
+  description?: string;
+  image?: string;
+  icon?: string;
+};
 // import ScenarioCard from '@/components/game/ScenarioCard'; // Assuming you'll create this component
 
 /**
@@ -14,7 +22,7 @@ import { Scenario } from '@/game/types'; // Import the Scenario type
  * Fetches available scenarios from the API and displays them.
  */
 const ScenarioSelectionPage: React.FC = () => {
-  const [scenarios, setScenarios] = useState<Scenario[]>([]);
+  const [scenarios, setScenarios] = useState<ScenarioListItem[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
@@ -33,7 +41,7 @@ const ScenarioSelectionPage: React.FC = () => {
           throw new Error(`Failed to fetch scenarios: ${response.statusText}`);
         }
 
-        const data: Scenario[] = await response.json();
+        const data: ScenarioListItem[] = await response.json();
         setScenarios(data);
       } catch (err: any) {
         console.error("Error fetching scenarios:", err);
@@ -85,8 +93,8 @@ const ScenarioSelectionPage: React.FC = () => {
             className="cursor-pointer bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300"
             onClick={() => handleSelectScenario(scenario.slug)}
           >
-            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{scenario.title}</h2>
-            <p className="text-gray-700">{scenario.description}</p>
+            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{scenario.title ?? scenario.name ?? scenario.slug}</h2>
+            {scenario.description && <p className="text-gray-700">{scenario.description}</p>}
              {/* Optional: Display scenario image using ScenarioCard component */}
             {/* <ScenarioCard scenario={scenario} /> */}
           </div>

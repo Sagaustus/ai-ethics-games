@@ -9,6 +9,25 @@ import { useGameState } from '@/hooks/useGameState';
 import { useScenario } from '@/hooks/useScenario'; // To get scenario context
 import { evaluateArgument, generateNpcRebuttal, ArgumentEvaluationOutcome } from '@/game/utils/argumentEvaluator'; // Import evaluation logic
 import { Argument, DebateData } from '@/game/types'; // Import types
+import argumentData from '@/data/argumentData';
+
+const ARGUMENT_KEY_BY_SLUG: Record<string, keyof typeof argumentData> = {
+  'the-watchful-eye': 'watchfulEyeScenario',
+  'the-self-driving-dilemma': 'selfDrivingDilemmaScenario',
+  'the-censored-world': 'censoredWorldScenario',
+  'the-face-of-deception': 'faceOfDeceptionScenario',
+  'the-ethical-soldier': 'ethicalSoldierScenario',
+  'the-carbon-footprint': 'carbonFootprintScenario',
+  'the-perfect-partner': 'perfectPartnerScenario',
+  'the-conscious-machine': 'consciousMachineScenario',
+  'the-rogue-coder': 'rogueCoderScenario',
+  'the-jobless-future': 'joblessFutureScenario',
+  'the-learning-machine': 'learningMachineScenario',
+  'the-minority-report': 'minorityReportScenario',
+  'the-biased-judge': 'biasedJudgeScenario',
+  'the-artificial-artist': 'artificialArtistScenario',
+  'the-algorithmic-doctor': 'algorithmicDoctorScenario',
+};
 
 /**
  * Page for the main argument/debate phase of a scenario.
@@ -26,15 +45,14 @@ const ArgumentPhasePage: React.FC = () => {
   // Access and update game state
   const { player, updateScore, setGameStatus } = useGameState();
 
+  const debateKey = scenarioSlug ? ARGUMENT_KEY_BY_SLUG[scenarioSlug] : undefined;
+  const debateData: DebateData | undefined = debateKey ? (argumentData as any)[debateKey] : undefined;
+
   // State for the argument phase UI and logic
   const [currentArgumentTurn, setCurrentArgumentTurn] = useState<number>(0);
-  const [debateFeedback, setDebateFeedback] = useState<string | null>(null);
+  const [debateFeedback, setDebateFeedback] = useState<string | null>(debateData?.npcArgument ?? null);
   const [npcResponse, setNpcResponse] = useState<string | null>(null);
-  const [availableArguments, setAvailableArguments] = useState<Argument[]>([]);
-
-  // Assuming debate data is structured within scenarioData or fetched separately
-  // For now, let's assume scenarioData includes a debateData property based on original files
-  const debateData: DebateData | undefined = (scenarioData as any)?.argumentData; // Type assertion for now
+  const [availableArguments, setAvailableArguments] = useState<Argument[]>(debateData?.playerArguments ?? []);
 
   useEffect(() => {
       if (debateData) {
@@ -43,12 +61,12 @@ const ArgumentPhasePage: React.FC = () => {
           // Display the initial NPC argument or setup
            setDebateFeedback(debateData.npcArgument || "The debate begins!");
       }
-  }, [debateData]);
+    }, [debateKey]);
 
 
   // Handle player choosing an argument
   const handleChooseArgument = (chosenArgument: Argument) => {
-    if (!player.schoolOfThought || !scenarioData || !debateData) {
+    if (!player.schoolOfThought || !debateData) {
       console.error("Game state or data not fully loaded for argument phase.");
       return;
     }
@@ -57,9 +75,7 @@ const ArgumentPhasePage: React.FC = () => {
     const evaluationOutcome: ArgumentEvaluationOutcome = evaluateArgument(
       player.schoolOfThought,
       'opponent-school-slug', // Replace with actual opponent school logic if needed
-      chosenArgument,
-      scenarioData,
-      useGameState() // Pass the current game state for evaluation
+      chosenArgument
     );
 
     // Update game state based on evaluation outcome
@@ -72,7 +88,7 @@ const ArgumentPhasePage: React.FC = () => {
 
     // Display feedback and NPC response
     setDebateFeedback(evaluationOutcome.feedback);
-    setNpcResponse(generateNpcRebuttal(chosenArgument, debateData, scenarioData)); // Generate NPC response
+    setNpcResponse(generateNpcRebuttal(chosenArgument, debateData)); // Generate NPC response
 
     // Proceed to the next turn or end the phase
     const nextTurn = currentArgumentTurn + 1;
@@ -100,10 +116,10 @@ const ArgumentPhasePage: React.FC = () => {
     return <div className="text-center text-xl text-red-500">Error loading debate: {error}</div>;
   }
 
-  if (!scenarioData || !debateData) {
+    if (!debateData) {
       return (
           <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-              <p className="text-xl text-gray-700">Debate data not found for this scenario.</p>
+          <p className="text-xl text-gray-700">Debate data not found for this scenario.</p>
                <div className="mt-8">
                   <Link href="/scenario-selection" className="text-blue-500 hover:underline">
                       Back to Scenario Selection
@@ -116,7 +132,7 @@ const ArgumentPhasePage: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">{scenarioData.title} - Argument Phase</h1>
+      <h1 className="text-4xl font-bold mb-8">{scenarioData?.title ?? scenarioSlug} - Argument Phase</h1>
 
       {/* Display Opponent's Argument/Debate State */}
       <div className="mb-6 p-4 bg-blue-100 rounded-md max-w-prose text-left">

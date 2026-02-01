@@ -28,6 +28,62 @@ export const determineDominantAlignment = (scores: PlayerState['scores']): 'util
   return sortedAlignments[0][0] as 'utilitarian' | 'deontological' | 'virtue';
 };
 
+export type ScoreDebrief = {
+  headline: string;
+  summary: string;
+  suggestions: string[];
+};
+
+export const generateScoreDebrief = (scores: PlayerState['scores']): ScoreDebrief => {
+  const dominant = determineDominantAlignment(scores);
+
+  if (dominant === 'neutral') {
+    return {
+      headline: 'Balanced Reasoning',
+      summary:
+        'Your choices distributed across multiple ethical lenses. That’s often realistic in AI ethics—real decisions mix consequences, duties/rights, and character-based considerations.',
+      suggestions: [
+        'On your next run, try committing to one lens for a full scenario to see what tradeoffs appear.',
+        'When you choose, explicitly name the stakeholder you prioritize and the principle you are sacrificing.',
+      ],
+    };
+  }
+
+  if (dominant === 'utilitarian') {
+    return {
+      headline: 'Utilitarian Lean',
+      summary:
+        'You tended to prioritize outcomes and aggregate harm/benefit. This lens is powerful for safety, public welfare, and resource allocation decisions—but can underweight rights and fairness if not checked.',
+      suggestions: [
+        'Before finalizing a choice, ask: who bears the cost, and are harms distributed fairly?',
+        'Try adding a “rights constraint” (consent, due process, dignity) even when net benefits look large.',
+      ],
+    };
+  }
+
+  if (dominant === 'deontological') {
+    return {
+      headline: 'Deontological Lean',
+      summary:
+        'You tended to prioritize duties, rules, and rights (e.g., privacy, consent, non-deception). This lens protects individuals from being treated as mere means—but can struggle when rules conflict or when outcomes are catastrophic.',
+      suggestions: [
+        'When duties conflict, state which duty is higher-priority and why.',
+        'Stress-test your rule: would it still be acceptable if the outcome is very costly?',
+      ],
+    };
+  }
+
+  return {
+    headline: 'Virtue Ethics Lean',
+    summary:
+      'You tended to prioritize character and the kind of institutions/people we become (e.g., integrity, humility, care, prudence). This lens is great for governance culture and long-term trust—but can be vague without concrete policies.',
+    suggestions: [
+      'Translate the virtue into a practice: audits, transparency norms, escalation paths, or red-team processes.',
+      'Consider which incentives shape behavior—and redesign them to support the virtues you value.',
+    ],
+  };
+};
+
 // You can add more complex scoring functions here as the game develops,
 // e.g., calculate points for specific choices, apply multipliers, handle penalties, etc.
 // export const calculateChoicePoints = (choiceOutcome: string, scenarioState: any): PlayerState['scores'] => {

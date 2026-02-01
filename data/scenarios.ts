@@ -60,3 +60,25 @@ export const scenarioData = {
   artificialArtistScenario,
   algorithmicDoctorScenario,
 };
+
+/**
+ * Canonical local scenario detail mapping keyed by dashed slug.
+ * This lets the app run without a configured database (e.g., in dev containers).
+ */
+export const scenarioDetailsBySlug: Record<string, any> = {
+  'the-watchful-eye': watchfulEyeScenario,
+  'the-self-driving-dilemma': selfDrivingDilemmaScenario,
+  'the-censored-world': censoredWorldScenario,
+  'the-face-of-deception': faceOfDeceptionScenario,
+  'the-ethical-soldier': ethicalSoldierScenario,
+  'the-carbon-footprint': carbonFootprintScenario,
+  'the-perfect-partner': perfectPartnerScenario,
+  'the-conscious-machine': consciousMachineScenario,
+  'the-rogue-coder': rogueCoderScenario,
+  'the-jobless-future': joblessFutureScenario,
+  'the-learning-machine': learningMachineScenario,
+  'the-minority-report': minorityReportScenario,
+  'the-biased-judge': biasedJudgeScenario,
+  'the-artificial-artist': artificialArtistScenario,
+  'the-algorithmic-doctor': algorithmicDoctorScenario,
+};

@@ -5,7 +5,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useGameState } from '@/hooks/useGameState';
-import { calculateTotalScore, determineDominantAlignment } from '@/game/utils/scoringLogic'; // Import scoring utilities
+import { calculateTotalScore, determineDominantAlignment, generateScoreDebrief } from '@/game/utils/scoringLogic'; // Import scoring utilities
 // import { useScenario } from '@/hooks/useScenario'; // Optional: to display scenario-specific results
 
 /**
@@ -19,6 +19,7 @@ const EndGamePage: React.FC = () => {
   // Calculate total score and determine dominant alignment
   const totalScore = calculateTotalScore(player.scores);
   const dominantAlignment = determineDominantAlignment(player.scores);
+  const debrief = generateScoreDebrief(player.scores);
 
    // You could fetch the completed scenario data here if needed for a detailed summary
    // const { scenarioData } = useScenario(scenario.currentScenarioSlug);
@@ -49,6 +50,18 @@ const EndGamePage: React.FC = () => {
           <p className="text-xl font-bold">Dominant Alignment: {dominantAlignment.charAt(0).toUpperCase() + dominantAlignment.slice(1)}</p>
           {/* Add other relevant scores or metrics */}
         </div>
+      </div>
+
+      <div className="bg-white rounded-lg shadow-md p-6 w-full max-w-xl mb-8 text-left">
+        <h2 className="text-2xl font-semibold mb-2 text-blue-700">{debrief.headline}</h2>
+        <p className="text-gray-700 mb-4">{debrief.summary}</p>
+        {debrief.suggestions.length > 0 && (
+          <ul className="list-disc pl-6 text-gray-700 space-y-1">
+            {debrief.suggestions.map((s, i) => (
+              <li key={i}>{s}</li>
+            ))}
+          </ul>
+        )}
       </div>
 
       {/* Optional: Display feedback based on dominant alignment or total score */}
