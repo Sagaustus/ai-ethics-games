@@ -1,26 +1,27 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss';
+import defaultTheme from 'tailwindcss/defaultTheme';
 
-export default {
-  content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
-  ],
+const config = {
+  content: ['./pages/**/*.{js,ts,jsx,tsx,mdx}', './components/**/*.{js,ts,jsx,tsx,mdx}', './app/**/*.{js,ts,jsx,tsx,mdx}'],
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: 'var(--background)',
+        foreground: 'var(--foreground)',
+
+        // Custom palette used throughout the app.
+        'mindscape-bg': '#0a0a12',
+        'mindscape-fg': '#e9ecff',
+        'debate-panel': '#121422',
+        'portal-gold': '#f5c542',
+        'neon-gold': '#ffcc00',
+      },
+      fontFamily: {
+        sans: ['Inter', ...defaultTheme.fontFamily.sans],
       },
     },
   },
   plugins: [],
 } satisfies Config;
 
-module.exports = {
-  theme: {
-    extend: {
-      colors: { 'neon-gold': '#ffcc00' },
-    },
-  },
-};
+export default config;
