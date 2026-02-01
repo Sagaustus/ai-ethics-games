@@ -102,47 +102,48 @@ const DailyChallengePage: React.FC = () => {
 
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading daily challenge...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading daily challenge...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error loading daily challenge: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error loading daily challenge: {error}</div>;
   }
 
   if (!dailyChallenge) {
        return (
-           <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-               <p className="text-xl text-gray-700">No daily challenge available today.</p>
-                <div className="mt-8">
-                   <Link href="/" className="text-blue-500 hover:underline">
-                       Back to Home
-                   </Link>
-               </div>
+           <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+             <p className="text-xl text-mindscape-fg/80">No daily challenge available today.</p>
+             <div className="mt-8">
+               <Link href="/" className="hover:text-portal-gold transition-colors">
+                 Back to Home
+               </Link>
+             </div>
            </div>
        );
    }
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Daily Ethical Challenge</h1>
-      <h2 className="text-2xl font-semibold mb-4 text-blue-700">{dailyChallenge.title}</h2>
+    <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-10 text-center">
+      <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Daily Ethical Challenge</h1>
+      <p className="mt-3 text-mindscape-fg/80">A quick dilemma to sharpen your instincts.</p>
+      <h2 className="mt-8 text-xl font-semibold text-mindscape-fg">{dailyChallenge.title}</h2>
 
       {/* Display the daily challenge text or current feedback */}
-      <div className="mb-6 text-lg text-gray-800 max-w-prose">
-        {debateFeedback}
-         {isCompleted && <p className="mt-4 text-green-600 font-semibold">Challenge Completed for Today!</p>}
+      <div className="mt-4 rounded-2xl bg-debate-panel/60 border border-white/10 p-6 text-left">
+        <div className="text-mindscape-fg/90 leading-relaxed">{debateFeedback}</div>
+        {isCompleted && <p className="mt-4 text-emerald-300 font-semibold">Challenge Completed for Today!</p>}
       </div>
 
 
       {/* Display choices if not completed */}
       {!isCompleted && dailyChallenge.choices && (
-        <div className="flex flex-col space-y-4 w-full max-w-md">
+        <div className="mt-6 flex flex-col space-y-3 w-full">
           {dailyChallenge.choices.map((choice, index) => (
             <button
               key={index}
               onClick={() => handleChoice(choice)}
-              className="px-6 py-3 bg-green-500 text-white text-lg rounded-md shadow-md hover:bg-green-600 transition-colors duration-300"
+              className="w-full rounded-xl border border-portal-gold/25 bg-black/30 px-4 py-3 text-left text-portal-gold hover:border-portal-gold/60 hover:bg-black/40 transition"
             >
               {choice.text}
             </button>
@@ -151,11 +152,11 @@ const DailyChallengePage: React.FC = () => {
       )}
 
        {/* Back to home link */}
-       <div className="mt-8">
-            <Link href="/" className="text-blue-500 hover:underline">
-                Back to Home
-            </Link>
-        </div>
+      <div className="mt-10">
+        <Link href="/" className="hover:text-portal-gold transition-colors">
+          Back to Home
+        </Link>
+      </div>
 
          {/* Optional: Display user's daily challenge score/result */}
          {/* {isCompleted && (

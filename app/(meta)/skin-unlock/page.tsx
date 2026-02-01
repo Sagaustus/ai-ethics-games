@@ -76,56 +76,55 @@ const SkinUnlockPage: React.FC = () => {
 
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading skins...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading skins...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error loading skins: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error loading skins: {error}</div>;
   }
 
    if (availableSkins.length === 0 && !isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-                <p className="text-xl text-gray-700">No skins available yet.</p>
-                 <div className="mt-8">
-                    <Link href="/" className="text-blue-500 hover:underline">
-                        Back to Home
-                    </Link>
-                </div>
+            <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+              <p className="text-xl text-mindscape-fg/80">No skins available yet.</p>
+              <div className="mt-8">
+                <Link href="/" className="hover:text-portal-gold transition-colors">
+                  Back to Home
+                </Link>
+              </div>
             </div>
         );
     }
 
 
   return (
-    <div className="flex flex-col items-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Unlock & Manage Skins</h1>
-
-      <div className="mb-8 text-lg text-gray-800">
-        <p>Personalize your character with different skins!</p>
+    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Unlock & Manage Skins</h1>
+        <p className="mt-3 text-mindscape-fg/80">Personalize your character with different looks.</p>
       </div>
 
       {/* Display Available Skins */}
-      <div className="w-full max-w-4xl grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {availableSkins.map((skin) => (
-          <div key={skin.slug} className="bg-white rounded-lg shadow-md p-4 flex flex-col items-center text-center">
+          <div key={skin.slug} className="rounded-2xl bg-debate-panel/60 border border-white/10 p-4 flex flex-col items-center text-center">
              {/* Optional: Display skin image */}
              {skin.imageUrl && (
                  <img src={skin.imageUrl} alt={skin.name} className="w-full h-40 object-cover rounded mb-4"/>
              )}
-            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{skin.name}</h2>
-            <p className="text-gray-700 text-sm">{skin.description}</p>
+            <h2 className="text-xl font-bold text-portal-gold">{skin.name}</h2>
+            <p className="mt-2 text-mindscape-fg/80 text-sm">{skin.description}</p>
 
             <div className="mt-4 w-full">
               {isSkinUnlocked(skin.slug) ? (
                 <button
                   onClick={() => handleEquipSkin(skin.slug)}
-                  className="px-6 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 transition-colors duration-300 w-full"
+                  className="w-full rounded-md bg-portal-gold px-4 py-2 font-semibold text-black hover:opacity-90 transition"
                 >
                   Equip Skin
                 </button>
               ) : (
-                <div className="text-gray-600 text-sm italic">
+                <div className="text-mindscape-fg/70 text-sm italic">
                   Unlock Criteria: {skin.unlockedCriteria || 'Complete a specific challenge/achievement'}
                    {/* Optional: Add button linking to challenge/achievement */}
                 </div>
@@ -137,11 +136,11 @@ const SkinUnlockPage: React.FC = () => {
 
 
        {/* Back to home link */}
-       <div className="mt-8">
-            <Link href="/" className="text-blue-500 hover:underline">
-                Back to Home
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/" className="hover:text-portal-gold transition-colors">
+          Back to Home
+        </Link>
+      </div>
     </div>
   );
 };

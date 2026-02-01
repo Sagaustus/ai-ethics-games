@@ -102,7 +102,7 @@ const MultiplayerLobbyPage: React.FC = () => {
 
       const newLobby: Lobby = await response.json();
       // setPlayerLobby(newLobby.id); // Update game state with the lobby the player joined
-      router.push(`/multiplayer/lobby/${newLobby.id}`); // Navigate to the specific lobby page (assuming a dynamic route)
+      router.push(`/lobby/${newLobby.id}`); // Navigate to the specific lobby page
 
     } catch (err: any) {
       console.error("Error creating lobby:", err);
@@ -117,7 +117,7 @@ const MultiplayerLobbyPage: React.FC = () => {
      // const response = await fetch(`/api/multiplayer/lobbies/${lobbyId}/join`, { method: 'POST' }); // We will create this API route later
      // if (response.ok) {
         // setPlayerLobby(lobbyId); // Update game state
-         router.push(`/multiplayer/lobby/${lobbyId}`); // Navigate to the specific lobby page
+         router.push(`/lobby/${lobbyId}`); // Navigate to the specific lobby page
      // } else {
         // Handle error joining lobby
      // }
@@ -125,53 +125,56 @@ const MultiplayerLobbyPage: React.FC = () => {
 
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading lobbies...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading lobbies...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error loading lobbies: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error loading lobbies: {error}</div>;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Multiplayer Lobby</h1>
+    <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Multiplayer Lobby</h1>
+        <p className="mt-3 text-mindscape-fg/80">Create a lobby or join an existing room.</p>
+      </div>
 
       {/* Create New Lobby Section */}
-      <div className="mb-8 p-6 bg-white rounded-lg shadow-md w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-4">Create New Lobby</h2>
+      <div className="mt-10 p-6 rounded-2xl bg-debate-panel/60 border border-white/10 w-full">
+        <h2 className="text-xl font-bold text-mindscape-fg">Create New Lobby</h2>
         <input
           type="text"
           placeholder="Enter lobby name"
           value={newLobbyName}
           onChange={(e) => setNewLobbyName(e.target.value)}
-          className="border p-2 rounded mr-2 text-gray-800 w-full mb-4"
+          className="mt-4 w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-mindscape-fg placeholder:text-mindscape-fg/50 focus:outline-none focus:ring-2 focus:ring-portal-gold/40"
         />
         <button
           onClick={handleCreateLobby}
-          className="px-6 py-3 bg-blue-600 text-white font-bold rounded-md hover:bg-blue-700 transition-colors duration-300 w-full"
+          className="mt-4 w-full rounded-md bg-portal-gold px-6 py-3 font-semibold text-black hover:opacity-90 transition"
         >
           Create Lobby
         </button>
       </div>
 
       {/* Available Lobbies List */}
-      <div className="w-full max-w-md">
-        <h2 className="text-2xl font-semibold mb-4">Available Lobbies</h2>
+      <div className="mt-10 w-full">
+        <h2 className="text-xl font-bold text-mindscape-fg">Available Lobbies</h2>
         {lobbies.length === 0 ? (
-          <p className="text-gray-600">No active lobbies found. Create one!</p>
+          <p className="mt-3 text-mindscape-fg/70">No active lobbies found. Create one!</p>
         ) : (
-          <ul className="space-y-4">
+          <ul className="mt-4 space-y-3">
             {lobbies.map((lobby) => (
-              <li key={lobby.id} className="flex justify-between items-center bg-white rounded-lg shadow-md p-4">
+              <li key={lobby.id} className="flex justify-between items-center rounded-xl bg-debate-panel/60 border border-white/10 p-4">
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-800">{lobby.name}</h3>
-                  <p className="text-sm text-gray-600">{lobby.players.length} player(s)</p>
-                   <p className="text-sm text-gray-600">Status: {lobby.status}</p>
+                  <h3 className="text-lg font-semibold text-mindscape-fg">{lobby.name}</h3>
+                  <p className="mt-1 text-sm text-mindscape-fg/70">{lobby.players.length} player(s)</p>
+                  <p className="text-sm text-mindscape-fg/70">Status: {lobby.status}</p>
                 </div>
                 {lobby.status === 'waiting' && (
                      <button
                         onClick={() => handleJoinLobby(lobby.id)}
-                        className="px-4 py-2 bg-green-500 text-white font-bold rounded-md hover:bg-green-600 transition-colors duration-300"
+                        className="px-4 py-2 rounded-md bg-portal-gold font-semibold text-black hover:opacity-90 transition"
                      >
                         Join
                      </button>
@@ -184,11 +187,11 @@ const MultiplayerLobbyPage: React.FC = () => {
       </div>
 
        {/* Back to home link */}
-       <div className="mt-8">
-            <Link href="/" className="text-blue-500 hover:underline">
-                Back to Home
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/" className="hover:text-portal-gold transition-colors">
+          Back to Home
+        </Link>
+      </div>
     </div>
   );
 };

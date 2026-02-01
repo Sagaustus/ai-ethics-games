@@ -65,29 +65,32 @@ const CodexPage: React.FC = () => {
 
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading Codex...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading Codex...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error loading Codex: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error loading Codex: {error}</div>;
   }
 
    if (codexEntries.length === 0 && !isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-                <p className="text-xl text-gray-700">No codex entries available yet.</p>
-                 <div className="mt-8">
-                    <Link href="/" className="text-blue-500 hover:underline">
-                        Back to Home
-                    </Link>
-                </div>
+            <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+              <p className="text-xl text-mindscape-fg/80">No codex entries available yet.</p>
+              <div className="mt-8">
+                <Link href="/" className="hover:text-portal-gold transition-colors">
+                  Back to Home
+                </Link>
+              </div>
             </div>
         );
     }
 
   return (
-    <div className="flex flex-col items-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Codex</h1>
+    <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Codex</h1>
+        <p className="mt-3 text-mindscape-fg/80">Reference concepts and ethical tools you encounter.</p>
+      </div>
 
        {/* Search Input */}
         <input
@@ -95,22 +98,22 @@ const CodexPage: React.FC = () => {
             placeholder="Search codex entries..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="border p-2 rounded mb-6 text-gray-800 w-full max-w-md"
+          className="mt-8 w-full rounded-lg border border-white/10 bg-black/30 px-4 py-3 text-mindscape-fg placeholder:text-mindscape-fg/50 focus:outline-none focus:ring-2 focus:ring-portal-gold/40"
         />
 
 
       {/* Display Codex Entries */}
-      <div className="w-full max-w-2xl space-y-6 text-left">
+        <div className="mt-8 w-full space-y-6 text-left">
           {filteredEntries.length === 0 && searchTerm !== '' ? (
-              <p className="text-gray-600">No entries found matching your search.</p>
+            <p className="text-mindscape-fg/70">No entries found matching your search.</p>
           ) : (
               filteredEntries.map((entry) => (
-                <div key={entry.slug} className="bg-white rounded-lg shadow-md p-6">
-                  <h2 className="text-2xl font-semibold mb-2 text-blue-700">{entry.title}</h2>
+            <div key={entry.slug} className="rounded-2xl bg-debate-panel/60 border border-white/10 p-6">
+              <h2 className="text-xl font-bold text-portal-gold">{entry.title}</h2>
                   {/* Render content. Use a library like 'marked' or 'dompurify' if content is Markdown/HTML */}
-                  <div className="text-gray-800" dangerouslySetInnerHTML={{ __html: entry.content }}></div> {/* Basic HTML rendering */}
+              <div className="mt-3 text-mindscape-fg/90" dangerouslySetInnerHTML={{ __html: entry.content }}></div> {/* Basic HTML rendering */}
                   {entry.tags && entry.tags.length > 0 && (
-                      <div className="mt-4 text-sm text-gray-600">
+                <div className="mt-4 text-sm text-mindscape-fg/70">
                           Tags: {entry.tags.join(', ')}
                       </div>
                   )}
@@ -130,11 +133,11 @@ const CodexPage: React.FC = () => {
       </div>
 
        {/* Back to home link */}
-       <div className="mt-8">
-            <Link href="/" className="text-blue-500 hover:underline">
-                Back to Home
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/" className="hover:text-portal-gold transition-colors">
+          Back to Home
+        </Link>
+      </div>
     </div>
   );
 };

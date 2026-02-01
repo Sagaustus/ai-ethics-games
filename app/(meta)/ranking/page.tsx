@@ -54,36 +54,39 @@ const RankingPage: React.FC = () => {
 
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading rankings...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading rankings...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error loading rankings: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error loading rankings: {error}</div>;
   }
 
    if (rankingData.length === 0 && !isLoading) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-                <p className="text-xl text-gray-700">No ranking data available yet. Play some scenarios to get ranked!</p>
-                 <div className="mt-8">
-                    <Link href="/" className="text-blue-500 hover:underline">
-                        Back to Home
-                    </Link>
-                </div>
+            <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+              <p className="text-xl text-mindscape-fg/80">No ranking data available yet. Play some scenarios to get ranked!</p>
+              <div className="mt-8">
+                <Link href="/" className="hover:text-portal-gold transition-colors">
+                  Back to Home
+                </Link>
+              </div>
             </div>
         );
     }
 
   return (
-    <div className="flex flex-col items-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Player Rankings</h1>
+    <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Player Rankings</h1>
+        <p className="mt-3 text-mindscape-fg/80">See how you compare across ethical alignments.</p>
+      </div>
 
-      <div className="mb-8 text-lg text-gray-800">
+      <div className="mt-8 rounded-2xl bg-debate-panel/60 border border-white/10 p-5 text-left text-mindscape-fg/90">
         <p>See how you compare to other players based on your ethical scores.</p>
       </div>
 
       {/* Display Ranking Data (using a simple list for now, can use a table component) */}
-      <div className="w-full max-w-2xl">
+      <div className="mt-8 w-full">
         {/* Optional: Table Header */}
         {/* <div className="grid grid-cols-4 gap-4 font-bold border-b-2 pb-2 mb-4">
             <div>Rank</div>
@@ -91,16 +94,16 @@ const RankingPage: React.FC = () => {
             <div>Total Score</div>
             <div>Dominant Alignment</div> // If you calculate/store this on backend
         </div> */}
-        <ul className="space-y-4 text-left">
+        <ul className="space-y-3 text-left">
           {rankingData.map((entry, index) => (
-            <li key={entry.playerId} className="bg-white rounded-lg shadow-md p-4 flex justify-between items-center">
+          <li key={entry.playerId} className="rounded-xl bg-debate-panel/60 border border-white/10 p-4 flex justify-between items-center">
                {/* Basic list item, replace with more detailed table row */}
                 <div>
-                    <span className="font-bold text-xl mr-4">#{index + 1}</span>
-                    <span className="text-gray-800 text-lg">{entry.playerId}</span> {/* Use Player ID/Username */}
+              <span className="font-bold text-lg mr-3 text-portal-gold">#{index + 1}</span>
+              <span className="text-mindscape-fg text-lg">{entry.playerId}</span> {/* Use Player ID/Username */}
                 </div>
                 <div className="text-right">
-                    <span className="font-semibold text-blue-700">Score: {entry.totalScore}</span>
+              <span className="font-semibold text-mindscape-fg">Score: {entry.totalScore}</span>
                     {/* Optional: Display dominant alignment if available */}
                     {/* <p className="text-sm text-gray-600">Alignment: {entry.dominantAlignment}</p> */}
                 </div>
@@ -118,11 +121,11 @@ const RankingPage: React.FC = () => {
 
 
        {/* Back to home link */}
-       <div className="mt-8">
-            <Link href="/" className="text-blue-500 hover:underline">
-                Back to Home
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/" className="hover:text-portal-gold transition-colors">
+          Back to Home
+        </Link>
+      </div>
     </div>
   );
 };

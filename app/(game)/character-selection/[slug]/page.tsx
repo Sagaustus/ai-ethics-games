@@ -68,39 +68,42 @@ const CharacterSelectionPage: React.FC<CharacterSelectionPageProps> = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading characters...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading characters...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error: {error}</div>;
   }
 
   if (characters.length === 0) {
       return (
-          <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-              <p className="text-xl text-gray-700">No characters found for this school of thought.</p>
-               <div className="mt-8">
-                  <Link href="/school-of-thought" className="text-blue-500 hover:underline">
-                      Back to School Selection
-                  </Link>
-              </div>
+          <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+            <p className="text-xl text-mindscape-fg/80">No characters found for this school of thought.</p>
+            <div className="mt-8">
+              <Link href="/school-of-thought" className="hover:text-portal-gold transition-colors">
+                Back to School Selection
+              </Link>
+            </div>
           </div>
       );
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Select Your Character</h1>
+    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Select Your Character</h1>
+        <p className="mt-3 text-mindscape-fg/80">Pick who will represent your arguments.</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {characters.map((character) => (
           <div
             key={character.slug}
-            className="cursor-pointer bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300"
+            className="cursor-pointer rounded-xl bg-debate-panel/60 border border-white/10 p-6 hover:border-portal-gold/40 hover:bg-debate-panel/70 transition"
             onClick={() => handleSelectCharacter(character.slug)}
           >
-            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{character.name}</h2>
-            <p className="text-gray-700">{character.description}</p>
+            <h2 className="text-xl font-bold text-portal-gold">{character.name}</h2>
+            <p className="mt-2 text-sm text-mindscape-fg/80">{character.description}</p>
             {/* Optional: Display character avatar */}
             {/* {character.avatar && <img src={character.avatar} alt={character.name} className="mt-4 w-full h-32 object-cover rounded" />} */}
           </div>
@@ -108,11 +111,11 @@ const CharacterSelectionPage: React.FC<CharacterSelectionPageProps> = () => {
       </div>
 
       {/* Back button */}
-       <div className="mt-8">
-            <Link href="/school-of-thought" className="text-blue-500 hover:underline">
-                Back to School Selection
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/school-of-thought" className="hover:text-portal-gold transition-colors">
+          Back to School Selection
+        </Link>
+      </div>
     </div>
   );
 };

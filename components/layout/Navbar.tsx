@@ -35,7 +35,7 @@ const Navbar: React.FC = () => {
         <Link href="/ranking" className="mr-4">
           Ranking
         </Link>
-        <Link href="/multiplayer/lobby" className="mr-4">
+        <Link href="/lobby" className="mr-4">
           Multiplayer
         </Link>
         {/* Add other navigation links as needed */}

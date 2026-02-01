@@ -51,26 +51,29 @@ const SchoolOfThoughtSelectionPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading schools of thought...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading schools of thought...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error: {error}</div>;
   }
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Select Your School of Thought</h1>
+    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Select Your School of Thought</h1>
+        <p className="mt-3 text-mindscape-fg/80">Choose a framework to guide your arguments.</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {schools.map((school) => (
           <div
             key={school.slug}
-            className="cursor-pointer bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300"
+            className="cursor-pointer rounded-xl bg-debate-panel/60 border border-white/10 p-6 hover:border-portal-gold/40 hover:bg-debate-panel/70 transition"
             onClick={() => handleSelectSchool(school.slug)}
           >
-            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{school.name}</h2>
-            <p className="text-gray-700">{school.description}</p>
+            <h2 className="text-xl font-bold text-portal-gold">{school.name}</h2>
+            <p className="mt-2 text-sm text-mindscape-fg/80">{school.description}</p>
              {/* Optional: Display school image */}
             {/* {school.image && <img src={school.image} alt={school.name} className="mt-4 w-full h-32 object-cover rounded" />} */}
           </div>
@@ -78,11 +81,11 @@ const SchoolOfThoughtSelectionPage: React.FC = () => {
       </div>
 
       {/* Optional: Back button or link */}
-       <div className="mt-8">
-            <Link href="/" className="text-blue-500 hover:underline">
-                Back to Start
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/" className="hover:text-portal-gold transition-colors">
+          Back to Start
+        </Link>
+      </div>
     </div>
   );
 };
