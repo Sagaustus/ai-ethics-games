@@ -4,9 +4,8 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
 import { useGameState } from '@/hooks/useGameState'; // Use to access/update player state or score
-import { Scenario, ScenarioChoice, ExplorationStep } from '@/game/types'; // Reuse scenario types
+import { ScenarioChoice, ExplorationStep } from '@/game/types'; // Reuse scenario types
 
 // Define a type for the daily challenge data if it's different from a regular scenario,
 // or just reuse the Scenario type if the daily challenge is structured like one.
@@ -28,7 +27,10 @@ const DailyChallengePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [isCompleted, setIsCompleted] = useState<boolean>(false); // State to track if the challenge is completed
 
-  const { player, updateScore } = useGameState(); // Access state and actions
+  // Using debateFeedback state for displaying challenge text and choice feedback for simplicity
+  const [debateFeedback, setDebateFeedback] = useState<string | null>(null);
+
+  const { updateScore } = useGameState(); // Access state and actions
 
   useEffect(() => {
     const fetchDailyChallenge = async () => {
@@ -63,12 +65,9 @@ const DailyChallengePage: React.FC = () => {
 
   const handleChoice = (choice: ScenarioChoice) => {
       if (isCompleted) {
-          console.log("Daily challenge already completed today.");
+        setDebateFeedback("You have already completed today's challenge.");
           return; // Prevent multiple submissions
       }
-
-      // Process the choice outcome - this is specific to the daily challenge logic
-      console.log("Daily challenge choice made:", choice.text, "Outcome:", choice.outcome);
 
       // Example: Update score based on the choice's effects (if daily challenge affects main score)
       if (choice.effects) {
@@ -88,9 +87,6 @@ const DailyChallengePage: React.FC = () => {
       // Optional: Transition to a results summary or just stay on the page
       // router.push('/daily-challenge/results'); // Example navigation
   };
-
-   // Using debateFeedback state for displaying challenge text and choice feedback for simplicity
-  const [debateFeedback, setDebateFeedback] = useState<string | null>(null);
 
 
   useEffect(() => {

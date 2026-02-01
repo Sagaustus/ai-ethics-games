@@ -12,6 +12,12 @@ export default function DebateBox({ scenarioSlug }: DebateBoxProps) {
   const playerHealth = 90;    // out of 100
   const aiArgument = "AI Judge: “Your reliance on subjective virtue lacks universal enforceability.”";
 
+  void scenarioSlug;
+
+  const clampPercent = (value: number) => Math.max(0, Math.min(100, value));
+  const playerHealthPct = clampPercent(playerHealth);
+  const aiHealthPct = clampPercent(aiHealth);
+
   return (
     <div className="space-y-6">
       {/* Health Bars */}
@@ -21,7 +27,7 @@ export default function DebateBox({ scenarioSlug }: DebateBoxProps) {
           <div className="w-full bg-gray-700 rounded-full h-4">
             <div
               className="bg-portal-gold h-4 rounded-full"
-              style={{ width: `${playerHealth}%` }}
+              style={{ width: `${playerHealthPct}%` }}
             />
           </div>
         </div>
@@ -30,7 +36,7 @@ export default function DebateBox({ scenarioSlug }: DebateBoxProps) {
           <div className="w-full bg-gray-700 rounded-full h-4">
             <div
               className="bg-red-500 h-4 rounded-full"
-              style={{ width: `${100 - aiHealth}%` }}
+              style={{ width: `${aiHealthPct}%` }}
             />
           </div>
         </div>

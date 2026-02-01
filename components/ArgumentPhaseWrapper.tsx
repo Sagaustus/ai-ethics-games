@@ -24,6 +24,8 @@ export default function ArgumentPhaseWrapper({ scenarioSlug }: ArgumentPhaseWrap
   // Combo chain state
   const [comboChain, setComboChain] = useState<string[]>([]);
 
+  const [lastDroppedQuote, setLastDroppedQuote] = useState<QuoteCardData | null>(null);
+
   // Intervene/twist state
   const [twistOpen, setTwistOpen] = useState(false);
   const [twists, setTwists] = useState<string[]>([]);
@@ -57,7 +59,7 @@ export default function ArgumentPhaseWrapper({ scenarioSlug }: ArgumentPhaseWrap
   };
 
   const handleDropQuote = (card: QuoteCardData) => {
-    console.log('Dropped quote:', card);
+    setLastDroppedQuote(card);
     // TODO: integrate quote effect into argument logic
   };
 
@@ -109,6 +111,11 @@ export default function ArgumentPhaseWrapper({ scenarioSlug }: ArgumentPhaseWrap
           {/* Drop Zone */}
           <div className="mt-4 px-8">
             <QuoteDropZone onDrop={handleDropQuote} />
+            {lastDroppedQuote && (
+              <p className="mt-3 text-sm text-portal-gold">
+                Selected quote: {lastDroppedQuote.text}
+              </p>
+            )}
           </div>
 
           {/* Mutation (Twist) Modal */}

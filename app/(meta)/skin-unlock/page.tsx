@@ -25,9 +25,10 @@ const SkinUnlockPage: React.FC = () => {
   const [availableSkins, setAvailableSkins] = useState<Skin[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
 
   // Access the current player's unlocked skins from game state
-  const { player, setCharacter /* Assuming an action to change equipped skin */ } = useGameState();
+  const { player } = useGameState();
   const unlockedSkinSlugs = player.inventory || []; // Assuming inventory stores unlocked skin slugs
 
   useEffect(() => {
@@ -64,13 +65,11 @@ const SkinUnlockPage: React.FC = () => {
 
   const handleEquipSkin = (skinSlug: string) => {
       if (isSkinUnlocked(skinSlug)) {
-          console.log("Equipping skin:", skinSlug);
-           // TODO: Implement logic to change the player's equipped skin
-           // This might involve updating player state in Zustand and/or updating the backend
-           // setCharacter(player.character, skinSlug); // Example: if setCharacter handled equipping skin
+          setStatusMessage(
+            `Skin "${skinSlug}" is unlocked. Equipping will be available soon.`
+          );
       } else {
-          console.log("Skin not unlocked:", skinSlug);
-          // Optionally show a message or guide user to unlock criteria
+          setStatusMessage(`Skin "${skinSlug}" is locked. Complete challenges to unlock it.`);
       }
   };
 
@@ -103,6 +102,12 @@ const SkinUnlockPage: React.FC = () => {
         <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Unlock & Manage Skins</h1>
         <p className="mt-3 text-mindscape-fg/80">Personalize your character with different looks.</p>
       </div>
+
+      {statusMessage && (
+        <div className="mt-6 rounded-xl border border-portal-gold/25 bg-black/30 px-4 py-3 text-mindscape-fg/90">
+          {statusMessage}
+        </div>
+      )}
 
       {/* Display Available Skins */}
       <div className="mt-10 w-full grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
