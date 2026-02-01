@@ -26,7 +26,7 @@ const ArgumentPhaseWelcome: React.FC = () => {
     <div style={{ textAlign: "center", color: "white", padding: "20px" }}>
       <h1>Welcome to the Argument Phase</h1>
       <p>
-        In this phase, you'll debate ethical principles and defend your decisions from the
+        In this phase, you&apos;ll debate ethical principles and defend your decisions from the
         exploration phase.
       </p>
       <button

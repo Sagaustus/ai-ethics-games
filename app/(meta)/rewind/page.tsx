@@ -64,7 +64,7 @@ const RewindPage: React.FC = () => {
       <h1 className="text-4xl font-bold mb-8">Rewind Your Choices</h1>
 
       <div className="mb-8 text-lg text-gray-800">
-        <p>Review the scenarios you've played and the decisions you made.</p>
+        <p>Review the scenarios you&apos;ve played and the decisions you made.</p>
       </div>
 
       {/* List of played scenarios */}

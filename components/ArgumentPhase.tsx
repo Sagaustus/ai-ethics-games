@@ -93,7 +93,7 @@ export default function ArgumentPhase({
           Game Over
         </h1>
         <p style={{ fontSize: "20px", color: "#ddd", marginBottom: "30px" }}>
-          You've lost the game. Better luck next time!
+          You&apos;ve lost the game. Better luck next time!
         </p>
       </div>
     );
@@ -119,7 +119,7 @@ export default function ArgumentPhase({
           Congratulations! You Won!
         </h1>
         <p style={{ fontSize: "20px", color: "#ddd", marginBottom: "30px" }}>
-          Your argument outshined the opponent's school of thought.
+          Your argument outshined the opponent&apos;s school of thought.
         </p>
       </div>
     );
