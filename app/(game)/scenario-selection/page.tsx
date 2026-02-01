@@ -60,41 +60,43 @@ const ScenarioSelectionPage: React.FC = () => {
   };
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading scenarios...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading scenarios...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error: {error}</div>;
   }
 
     if (scenarios.length === 0) {
         return (
-            <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-                <p className="text-xl text-gray-700">No scenarios available yet.</p>
-                {/* Optional: Link back */}
-                 <div className="mt-8">
-                     <Link href="/character-selection" className="text-blue-500 hover:underline">
-                         Back to Character Selection
-                     </Link>
-                 </div>
+            <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+              <p className="text-xl text-mindscape-fg/80">No scenarios available yet.</p>
+              <div className="mt-8">
+                <Link href="/school-of-thought" className="hover:text-portal-gold transition-colors">
+                  Back to Schools of Thought
+                </Link>
+              </div>
             </div>
         );
     }
 
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Select a Scenario</h1>
+    <div className="mx-auto w-full max-w-6xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Select a Scenario</h1>
+        <p className="mt-3 text-mindscape-fg/80">Pick a dilemma to explore and debate.</p>
+      </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {scenarios.map((scenario) => (
            <div
             key={scenario.slug}
-            className="cursor-pointer bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition-shadow duration-300"
+            className="cursor-pointer rounded-xl bg-debate-panel/60 border border-white/10 p-6 hover:border-portal-gold/40 hover:bg-debate-panel/70 transition"
             onClick={() => handleSelectScenario(scenario.slug)}
           >
-            <h2 className="text-2xl font-semibold mb-2 text-blue-700">{scenario.title ?? scenario.name ?? scenario.slug}</h2>
-            {scenario.description && <p className="text-gray-700">{scenario.description}</p>}
+            <h2 className="text-xl font-bold text-portal-gold">{scenario.title ?? scenario.name ?? scenario.slug}</h2>
+            {scenario.description && <p className="mt-2 text-sm text-mindscape-fg/80">{scenario.description}</p>}
              {/* Optional: Display scenario image using ScenarioCard component */}
             {/* <ScenarioCard scenario={scenario} /> */}
           </div>
@@ -102,11 +104,11 @@ const ScenarioSelectionPage: React.FC = () => {
       </div>
 
       {/* Optional: Back button or link */}
-       <div className="mt-8">
-            <Link href="/character-selection" className="text-blue-500 hover:underline">
-                Back to Character Selection
-            </Link>
-        </div>
+      <div className="mt-10 text-center">
+        <Link href="/school-of-thought" className="hover:text-portal-gold transition-colors">
+          Back to Schools of Thought
+        </Link>
+      </div>
     </div>
   );
 };

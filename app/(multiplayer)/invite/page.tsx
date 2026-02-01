@@ -1,122 +1,89 @@
 // app/(multiplayer)/invite/page.tsx
 
-'use client'; // This page requires client-side interactivity
+'use client';
 
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { useGameState } from '@/hooks/useGameState'; // Access player state, potential current lobby ID
 
-/**
- * Page to invite friends to a multiplayer lobby.
- * Displays lobby information and provides invite options.
- */
-const InviteFriendPage: React.FC = () => {
-  const params = useParams();
-  // Assuming the lobby ID is accessible, either from URL params or global state
-   const lobbyIdFromParams = Array.isArray(params.slug) ? params.slug[0] : params.slug; // If lobby ID is in URL
-  // const { player } = useGameState(); // If lobby ID is in player state: player.currentLobbyId
-  const currentLobbyId = lobbyIdFromParams; // Use param for now, adjust based on how lobby ID is passed
+type Lobby = {
+  id: string;
+  name: string;
+  players: string[];
+  status: 'waiting' | 'in-game' | 'finished';
+  createdAt: string;
+  scenarioSlug?: string;
+};
 
-  const [inviteLink, setInviteLink] = useState<string | null>(null);
-  const [isCopied, setIsCopied] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+export default function InviteIndexPage() {
+  const [lobbies, setLobbies] = useState<Lobby[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-
   useEffect(() => {
-    if (!currentLobbyId) {
-      setError("No active lobby found to invite friends to.");
-      setIsLoading(false);
-      return;
+    let cancelled = false;
+    async function load() {
+      setIsLoading(true);
+      setError(null);
+      try {
+        const res = await fetch('/api/multiplayer/lobbies');
+        if (!res.ok) throw new Error('Failed to load lobbies');
+        const data: Lobby[] = await res.json();
+        if (!cancelled) setLobbies(data);
+      } catch (e: any) {
+        if (!cancelled) setError(e?.message ?? 'Failed to load lobbies');
+      } finally {
+        if (!cancelled) setIsLoading(false);
+      }
     }
 
-    // Generate the invite link. This might be a direct link to join the lobby page with the ID.
-    const origin = window.location.origin; // Get the base URL of the application
-    const link = `${origin}/multiplayer/lobby/${currentLobbyId}`;
-    setInviteLink(link);
-    setIsLoading(false);
-
-    // Optional: You might want to fetch more details about the lobby here
-    // (e.g., how many players are in it) from your backend.
-
-  }, [currentLobbyId]); // Regenerate link if lobby ID changes
-
-
-  const handleCopyToClipboard = () => {
-    if (inviteLink) {
-      navigator.clipboard.writeText(inviteLink).then(() => {
-        setIsCopied(true);
-        // Reset the "Copied!" message after a few seconds
-        const timer = setTimeout(() => {
-          setIsCopied(false);
-        }, 2000);
-        return () => clearTimeout(timer); // Cleanup the timer
-      }).catch(err => {
-        console.error('Failed to copy invite link: ', err);
-        // Optionally show an error message
-      });
-    }
-  };
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, []);
 
   if (isLoading) {
-    return <div className="text-center text-xl text-gray-700">Loading invite options...</div>;
+    return <div className="text-center text-xl text-mindscape-fg/80">Loading invite options...</div>;
   }
 
   if (error) {
-    return <div className="text-center text-xl text-red-500">Error: {error}</div>;
+    return <div className="text-center text-xl text-red-300">Error: {error}</div>;
   }
 
-  if (!currentLobbyId || !inviteLink) {
-       return (
-           <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-               <p className="text-xl text-gray-700">You need to be in a lobby to invite friends.</p>
-                <div className="mt-8">
-                   <Link href="/multiplayer/lobby" className="text-blue-500 hover:underline">
-                       Go to Lobby
-                   </Link>
-               </div>
-           </div>
-       );
-   }
-
-
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4">
-      <h1 className="text-4xl font-bold mb-8">Invite Friends</h1>
-
-      <div className="mb-6 text-lg text-gray-800 max-w-prose">
-        <p>Share this link with your friends to invite them to your lobby:</p>
+    <div className="mx-auto w-full max-w-4xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <h1 className="text-3xl sm:text-4xl font-extrabold text-portal-gold">Invite Friends</h1>
+        <p className="mt-3 text-mindscape-fg/80">Pick a lobby to generate an invite link.</p>
       </div>
 
-      {/* Display the invite link */}
-      <div className="bg-gray-200 rounded-md p-4 break-all w-full max-w-md mb-4">
-        <p className="text-gray-800 font-mono">{inviteLink}</p>
-      </div>
-
-      {/* Button to copy the link */}
-      <button
-        onClick={handleCopyToClipboard}
-        className="px-8 py-4 bg-blue-600 text-white text-xl font-bold rounded-lg shadow-lg hover:bg-blue-700 transition-colors duration-300"
-      >
-        {isCopied ? 'Copied!' : 'Copy Link'}
-      </button>
-
-       {/* Optional: Link back to the lobby */}
-       <div className="mt-8">
-            <Link href={`/multiplayer/lobby/${currentLobbyId}`} className="text-blue-500 hover:underline">
-                Back to Lobby
+      <div className="mt-10 space-y-3">
+        {lobbies.length === 0 ? (
+          <div className="text-center text-mindscape-fg/70">No lobbies found. Create one first.</div>
+        ) : (
+          lobbies.map((lobby) => (
+            <Link
+              key={lobby.id}
+              href={`/invite/${lobby.id}`}
+              className="block rounded-xl bg-debate-panel/60 border border-white/10 p-4 hover:border-portal-gold/40 hover:bg-debate-panel/70 transition"
+            >
+              <div className="flex items-center justify-between gap-4">
+                <div>
+                  <div className="text-lg font-semibold text-mindscape-fg">{lobby.name}</div>
+                  <div className="mt-1 text-sm text-mindscape-fg/70">{lobby.players.length} player(s) • {lobby.status}</div>
+                </div>
+                <div className="text-sm text-portal-gold">Invite →</div>
+              </div>
             </Link>
-        </div>
+          ))
+        )}
+      </div>
 
-        {/* TODO: Optional - Implement searching for friends or in-game invites */}
-        {/* <div className="mt-8">
-             <h2 className="text-2xl font-semibold mb-4">Invite from Friend List</h2>
-             // Friend search input and results
-             // Invite buttons
-        </div> */}
+      <div className="mt-10 text-center">
+        <Link href="/lobby" className="hover:text-portal-gold transition-colors">
+          Back to Lobby
+        </Link>
+      </div>
     </div>
   );
-};
-
-export default InviteFriendPage;
+}

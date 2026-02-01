@@ -21,25 +21,25 @@ const GameStartPage: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen text-center p-4 bg-gray-100">
-      <h1 className="text-5xl font-bold text-blue-600 mb-4">MindScape: AI Ethics Game</h1>
-      <p className="text-xl text-gray-700 mb-8">
+    <div className="mx-auto w-full max-w-3xl px-4 sm:px-6 py-12 text-center">
+      <h1 className="text-4xl sm:text-5xl font-extrabold text-portal-gold">MindScape: AI Ethics Game</h1>
+      <p className="mt-4 text-lg text-mindscape-fg/80">
         Explore the complex ethical dilemmas of Artificial Intelligence. Choose your school of thought and debate your
         way through challenging scenarios.
       </p>
 
       <button
         onClick={handleStartGame}
-        className="px-8 py-4 bg-yellow-500 text-white text-2xl font-bold rounded-lg shadow-lg hover:bg-yellow-600 transition-colors duration-300"
+        className="mt-8 inline-flex items-center justify-center rounded-md bg-portal-gold px-8 py-4 text-lg font-bold text-black hover:opacity-90 transition"
       >
         Start Your Ethical Journey
       </button>
 
-      <div className="mt-8">
-        <Link href="/codex" className="text-blue-500 hover:underline mx-2">
+      <div className="mt-8 flex items-center justify-center gap-6">
+        <Link href="/codex" className="hover:text-portal-gold transition-colors">
           Explore the Codex
         </Link>
-        <Link href="/public-debates" className="text-blue-500 hover:underline mx-2">
+        <Link href="/public-debates" className="hover:text-portal-gold transition-colors">
           View Public Debates
         </Link>
       </div>
