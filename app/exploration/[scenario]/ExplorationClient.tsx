@@ -34,23 +34,15 @@ export default function ExplorationClient({ scenario }: { scenario: keyof typeof
 
   if (!scenario || !scenarioData[scenario]) {
     return (
-      <div style={{ color: "red", textAlign: "center", padding: "20px" }}>
-        <h1 style={{ color: "#ffcc00" }}>Error: Invalid Scenario</h1>
-        <p style={{ marginBottom: "20px" }}>Please return to the scenario selection page.</p>
-        <button
-          onClick={() => (window.location.href = "/")}
-          style={{
-            padding: "10px 20px",
-            backgroundColor: "#ffcc00",
-            color: "#1a1a1a",
-            fontSize: "16px",
-            borderRadius: "5px",
-            cursor: "pointer",
-            border: "none",
-          }}
+      <div className="mx-auto max-w-2xl px-4 py-16 text-center">
+        <h1 className="text-2xl font-bold text-red-400">Invalid scenario</h1>
+        <p className="mt-2 text-mindscape-fg/80">Please return to the scenario selection page.</p>
+        <a
+          href="/exploration"
+          className="mt-6 inline-flex items-center justify-center rounded-md bg-portal-gold px-4 py-2 font-semibold text-black hover:opacity-90 transition"
         >
           Back to Scenarios
-        </button>
+        </a>
       </div>
     );
   }
@@ -78,45 +70,38 @@ export default function ExplorationClient({ scenario }: { scenario: keyof typeof
   }
 
   return (
-    <div
-      style={{
-        backgroundColor: "#1a1a1a",
-        color: "white",
-        textAlign: "center",
-        padding: "20px",
-        fontFamily: "Arial, sans-serif",
-        minHeight: "100vh",
-      }}
-    >
-      <h1 style={{ fontSize: "28px", color: "#ffcc00", marginBottom: "20px" }}>
-        Exploration: {scenarioData[scenario].title}
-      </h1>
-      <p style={{ fontSize: "18px", marginBottom: "20px" }}>{currentStep.text}</p>
-      <div>
-        {currentStep.choices.map((choice, index) => (
-          <button
-            key={index}
-            onClick={() => handleChoice(choice)}
-            style={{
-              margin: "10px",
-              padding: "10px 20px",
-              backgroundColor: "#333",
-              color: "#ffcc00",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-              transition: "background-color 0.3s ease",
-            }}
-            onMouseOver={(e) => (e.currentTarget.style.backgroundColor = "#555")}
-            onMouseOut={(e) => (e.currentTarget.style.backgroundColor = "#333")}
-          >
-            {choice.text}
-          </button>
-        ))}
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-10">
+      <div className="text-center">
+        <p className="text-sm text-mindscape-fg/70">Exploration</p>
+        <h1 className="mt-2 text-3xl sm:text-4xl font-extrabold text-portal-gold">{scenarioData[scenario].title}</h1>
       </div>
-      <p style={{ marginTop: "20px", fontSize: "16px", color: "#ccc" }}>
-        Step {currentStepIndex + 1} of {steps.length}
-      </p>
+
+      <div className="mt-8 rounded-2xl bg-debate-panel/60 border border-white/10 p-5 sm:p-8 text-left">
+        <div className="text-mindscape-fg/90 leading-relaxed whitespace-pre-line text-base sm:text-lg">
+          {currentStep.text}
+        </div>
+
+        <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-3">
+          {currentStep.choices.map((choice, index) => (
+            <button
+              key={index}
+              onClick={() => handleChoice(choice)}
+              className="w-full rounded-xl border border-portal-gold/25 bg-black/30 px-4 py-3 text-left text-portal-gold hover:border-portal-gold/60 hover:bg-black/40 transition"
+            >
+              {choice.text}
+            </button>
+          ))}
+        </div>
+
+        <div className="mt-6 flex items-center justify-between text-sm text-mindscape-fg/70">
+          <span>
+            Step {currentStepIndex + 1} of {steps.length}
+          </span>
+          <a href="/exploration" className="hover:text-portal-gold transition-colors">
+            Back to scenarios
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

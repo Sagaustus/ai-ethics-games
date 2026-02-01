@@ -1,29 +1,20 @@
-"use client";
+import Link from 'next/link'
 
-import React from "react";
-
-const Footer: React.FC = () => {
+export default function Footer() {
   return (
-    <footer
-      style={{
-        backgroundColor: "#333",
-        color: "#ffcc00",
-        textAlign: "center",
-        padding: "10px 20px",
-      }}
-    >
-      <p>AI Ethics Game © 2024 | All Rights Reserved</p>
-      <p>
-        <a href="/terms" style={{ color: "#ffcc00", textDecoration: "none" }}>
-          Terms of Service
-        </a>{" "}
-        |{" "}
-        <a href="/privacy" style={{ color: "#ffcc00", textDecoration: "none" }}>
-          Privacy Policy
-        </a>
-      </p>
+    <footer className="border-t border-white/10 bg-debate-panel/60">
+      <div className="mx-auto max-w-6xl px-4 sm:px-6 py-6 text-center text-sm text-mindscape-fg/80">
+        <p>AI Ethics Game © 2024</p>
+        <p className="mt-2 flex items-center justify-center gap-3">
+          <Link href="/terms" className="hover:text-portal-gold transition-colors">
+            Terms of Service
+          </Link>
+          <span className="text-mindscape-fg/30">|</span>
+          <Link href="/privacy" className="hover:text-portal-gold transition-colors">
+            Privacy Policy
+          </Link>
+        </p>
+      </div>
     </footer>
-  );
-};
-
-export default Footer;
+  )
+}
